@@ -1,4 +1,3 @@
-// Entity.java
 package game;
 
 import javax.imageio.ImageIO;
@@ -6,14 +5,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Entity {
+public class Player {
     private int x, y, size;
+    private int speed;
     private Image playerImage;
 
-    public Entity(int x, int y, int size) {
+    public Player(int x, int y, int size, int speed) {
         this.x = x;
         this.y = y;
         this.size = size;
+        this.speed = speed;
         try {
             playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
         } catch (IOException e) {
@@ -45,20 +46,20 @@ public class Entity {
         this.y = y;
     }
 
-    public void moveUp() {
-        y -= 5;
+    public void moveUp(double deltaTime) {
+        y -= speed * deltaTime;
     }
 
-    public void moveDown() {
-        y += 5;
+    public void moveDown(double deltaTime) {
+        y += speed * deltaTime;
     }
 
-    public void moveLeft() {
-        x -= 5;
+    public void moveLeft(double deltaTime) {
+        x -= speed * deltaTime;
     }
 
-    public void moveRight() {
-        x += 5;
+    public void moveRight(double deltaTime) {
+        x += speed * deltaTime;
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {

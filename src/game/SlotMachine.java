@@ -6,11 +6,18 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public class SlotMachine extends JPanel {
-    private int[] numbers = new int[3];
+public abstract class SlotMachine extends JPanel {
+    private static final int SPAWN_X = 100; // Define SPAWN_X
+    private static final int SPAWN_Y = 100; // Define SPAWN_Y
+    private int[] numbers;
     private Random random = new Random();
 
-    public SlotMachine() {
+    public SlotMachine(int numberOfSlots) {
+        this(numberOfSlots, 0, 0); // Default to spawn location
+    }
+
+    public SlotMachine(int numberOfSlots, int x, int y) {
+        numbers = new int[numberOfSlots];
         setPreferredSize(new Dimension(200, 200));
         setBackground(Color.BLUE);
 
@@ -21,9 +28,12 @@ public class SlotMachine extends JPanel {
                 repaint();
             }
         });
+
+        // Set location based on provided x and y
+        EventQueue.invokeLater(() -> setLocation(SPAWN_X + x, SPAWN_Y + y));
     }
 
-    private void spin() {
+    protected void spin() {
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = random.nextInt(10); // Random numbers between 0-9
         }

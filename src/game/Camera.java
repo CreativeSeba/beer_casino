@@ -15,7 +15,7 @@ public class Camera {
         this.margin = margin;
     }
 
-    public void update(Entity player) {
+    public void update(Player player) {
         x = player.getX() - width / 2;
         y = player.getY() - height / 2;
 
