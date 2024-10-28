@@ -10,14 +10,17 @@ import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GamePanel extends JPanel implements ActionListener {
     private Timer timer;
     private Player player;
     private Set<Integer> pressedKeys;
     private Camera camera;
     private BufferedImage backgroundImage;
-    private Rectangle slotMachineArea;
-    private SmallSlotMachine smallSlotMachine;
+    private List<SmallSlotMachine> slotMachines;
+    private List<Rectangle> slotMachineAreas;
     private boolean isSlotMachineActive = false;
 
     private static final int WALL_THICKNESS = 50;
@@ -41,29 +44,32 @@ public class GamePanel extends JPanel implements ActionListener {
             e.printStackTrace();
         }
 
-        // Initialize slotMachineArea at the player's spawn location
-        slotMachineArea = new Rectangle(SPAWN_X - 50, SPAWN_Y - 50, 100, 100); // Centered on the spawn point
+        slotMachines = new ArrayList<>();
+        slotMachineAreas = new ArrayList<>();
 
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 pressedKeys.add(e.getKeyCode());
-                if (e.getKeyCode() == KeyEvent.VK_E && isPlayerOnSlotMachine()) {
-                    if (smallSlotMachine == null) {
-                        // Provide the required arguments, including an array of initial numbers
-                        smallSlotMachine = new SmallSlotMachine(3, 500, 500);
-                        add(smallSlotMachine);
-                        isSlotMachineActive = true;
-                        // Teleport player to the center of the slot machine square
-                        player.setX(slotMachineArea.x + slotMachineArea.width / 2 - player.getWidth() / 2);
-                        player.setY(slotMachineArea.y + slotMachineArea.height / 2 - player.getHeight() / 2);
-                    } else {
-                        remove(smallSlotMachine);
-                        smallSlotMachine = null;
-                        isSlotMachineActive = false;
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    for (int i = 0; i < slotMachineAreas.size(); i++) {
+                        if (slotMachineAreas.get(i).contains(player.getX(), player.getY())) {
+                            if (slotMachines.get(i) == null) {
+                                slotMachines.set(i, new SmallSlotMachine(3, 0, 100));
+                                add(slotMachines.get(i));
+                                isSlotMachineActive = true;
+                                player.setX(slotMachineAreas.get(i).x + slotMachineAreas.get(i).width / 2 - player.getWidth() / 2);
+                                player.setY(slotMachineAreas.get(i).y + slotMachineAreas.get(i).height / 2 - player.getHeight() / 2);
+                            } else {
+                                remove(slotMachines.get(i));
+                                slotMachines.set(i, null);
+                                isSlotMachineActive = false;
+                            }
+                            revalidate();
+                            repaint();
+                            break;
+                        }
                     }
-                    revalidate();
-                    repaint();
                 }
             }
 
@@ -77,8 +83,10 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
-    private boolean isPlayerOnSlotMachine() {
-        return slotMachineArea.contains(player.getX(), player.getY());
+    public void addSlotMachine(int x, int y) {
+        SmallSlotMachine slotMachine = new SmallSlotMachine(3, 0, 100);
+        slotMachines.add(slotMachine);
+        slotMachineAreas.add(new Rectangle(x, y, 100, 100));
     }
 
     @Override
@@ -104,9 +112,11 @@ public class GamePanel extends JPanel implements ActionListener {
         g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
         g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y + WALL_RADIUS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
 
-        // Draw the slot machine area
+        // Draw the slot machine areas
         g.setColor(Color.BLUE);
-        g.fillRect(slotMachineArea.x - camera.getX(), slotMachineArea.y - camera.getY(), slotMachineArea.width, slotMachineArea.height);
+        for (Rectangle area : slotMachineAreas) {
+            g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
+        }
 
         camera.update(player);
         player.draw(g, camera.getX(), camera.getY()); // Draw the player entity relative to the camera

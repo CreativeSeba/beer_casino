@@ -13,6 +13,9 @@ public class Main extends JFrame {
         GamePanel gamePanel = new GamePanel();
         add(gamePanel);
         pack();
+        gamePanel.addSlotMachine(200, 150);
+        gamePanel.addSlotMachine(500, 300);
+        gamePanel.addSlotMachine(500, 100);
     }
 
     public static void main(String[] args) {
