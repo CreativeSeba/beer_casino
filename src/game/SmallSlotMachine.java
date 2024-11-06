@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SmallSlotMachine extends SlotMachine {
+public class SmallSlotMachine extends SlotMachine implements Money {
     private int x;
     private int y;
 
@@ -35,5 +35,15 @@ public class SmallSlotMachine extends SlotMachine {
 
     public int getCustomY() {
         return y;
+    }
+
+    @Override
+    public void addMoney(int amount) {
+
+    }
+
+    @Override
+    public void removeMoney(int amount) {
+
     }
 }

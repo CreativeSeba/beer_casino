@@ -56,6 +56,9 @@ public class Player {
 
     public void moveLeft(double deltaTime) {
         x -= speed * deltaTime;
+//        if (x < -52) {
+//            x = -52;
+//        }
     }
 
     public void moveRight(double deltaTime) {

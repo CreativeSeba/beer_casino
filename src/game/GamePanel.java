@@ -26,17 +26,17 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final int WALL_THICKNESS = 50;
     private static final int WALL_RADIUS = 500;
     private static final int SPAWN_X = 400;
-    private static final int SPAWN_Y = 300;
+    private static final int SPAWN_Y = 400;
 
     public GamePanel() {
-        setPreferredSize(new Dimension(800, 600));
+        setPreferredSize(new Dimension(800, 800));
         setFocusable(true);
 
         player = new Player(0, 0, 5, 300); // Increase speed to 300
         player = new Player(SPAWN_X - player.getWidth() / 2, SPAWN_Y - player.getHeight() / 2, 5, 300); // Set correct position with increased speed
 
         pressedKeys = new HashSet<>();
-        camera = new Camera(800, 600, 100); // 100-pixel margin
+        camera = new Camera(SPAWN_X*2, SPAWN_Y*2, SPAWN_X, SPAWN_Y);
 
         try {
             backgroundImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));

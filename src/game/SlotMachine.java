@@ -6,7 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public abstract class SlotMachine extends JPanel {
+public abstract class SlotMachine extends JPanel  {
     private static final int SPAWN_X = 100; // Define SPAWN_X
     private static final int SPAWN_Y = 100; // Define SPAWN_Y
     private int[] numbers;
