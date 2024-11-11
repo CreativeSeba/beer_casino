@@ -1,11 +1,11 @@
 package game;
 
 public class Camera {
-    private int width, height;
-    private int x, y;
+    private static int width, height;
+    private static int x, y;
 
-    private int wallThickness;
-    private int wallRadius;
+    private static int wallThickness;
+    private static int wallRadius;
     private static int spawnX;
     private static int spawnY;
 

@@ -7,8 +7,6 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public abstract class SlotMachine extends JPanel  {
-    private static final int SPAWN_X = 100; // Define SPAWN_X
-    private static final int SPAWN_Y = 100; // Define SPAWN_Y
     private int[] numbers;
     private Random random = new Random();
 
@@ -30,7 +28,7 @@ public abstract class SlotMachine extends JPanel  {
         });
 
         // Set location based on provided x and y
-        EventQueue.invokeLater(() -> setLocation(SPAWN_X + x, SPAWN_Y + y));
+        EventQueue.invokeLater(() -> setLocation(x, y));
     }
 
     protected void spin() {

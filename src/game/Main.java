@@ -5,17 +5,17 @@ import javax.swing.*;
 public class Main extends JFrame {
     public Main() {
         setTitle("Beer Casino");
-        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         setResizable(false);
 
         GamePanel gamePanel = new GamePanel();
         add(gamePanel);
-        pack();
-        gamePanel.addSlotMachine(200, 150);
-        gamePanel.addSlotMachine(500, 300);
-        gamePanel.addSlotMachine(500, 100);
+        pack(); // Automatically size the window based on its content
+        setLocationRelativeTo(null); // Center the window on the screen
+
+        gamePanel.addSlotMachine(400-50,400-50);
+        gamePanel.addSlotMachine(0, 0);
+        gamePanel.addSlotMachine(0, 0);
     }
 
     public static void main(String[] args) {

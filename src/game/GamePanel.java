@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements ActionListener {
                     for (int i = 0; i < slotMachineAreas.size(); i++) {
                         if (slotMachineAreas.get(i).contains(player.getX(), player.getY())) {
                             if (slotMachines.get(i) == null) {
-                                slotMachines.set(i, new SmallSlotMachine(3, 0, 100));
+                                slotMachines.set(i, new SmallSlotMachine(3, SPAWN_X, SPAWN_Y));
                                 add(slotMachines.get(i));
                                 isSlotMachineActive = true;
                                 player.setX(slotMachineAreas.get(i).x + slotMachineAreas.get(i).width / 2 - player.getWidth() / 2);
@@ -84,7 +84,9 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void addSlotMachine(int x, int y) {
-        SmallSlotMachine slotMachine = new SmallSlotMachine(3, 0, 100);
+        x-=player.getWidth()/2;
+        y-=player.getHeight()/2;
+        SmallSlotMachine slotMachine = new SmallSlotMachine(3, x, y,SPAWN_X, SPAWN_Y);
         slotMachines.add(slotMachine);
         slotMachineAreas.add(new Rectangle(x, y, 100, 100));
     }
