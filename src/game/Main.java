@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Main extends JFrame {
     public Main() {
         setTitle("Beer Casino");
-        setSize(800, 600);
+        setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);

@@ -4,16 +4,18 @@ public class Camera {
     private int width, height;
     private int x, y;
 
-    private static final int WALL_THICKNESS = 50;
-    private static final int WALL_RADIUS = 500;
+    private int wallThickness;
+    private int wallRadius;
     private static int spawnX;
     private static int spawnY;
 
-    public Camera(int width, int height, int spawnX, int spawnY) {
+    public Camera(int width, int height, int spawnX, int spawnY, int wallThickness, int wallRadius) {
         this.width = width;
         this.height = height;
         this.spawnX = spawnX;
         this.spawnY = spawnY;
+        this.wallThickness = wallThickness;
+        this.wallRadius = wallRadius;
     }
 
     public void update(Player player) {
@@ -21,10 +23,10 @@ public class Camera {
         y = player.getY() - height / 2;
 
         // Clamp the camera position to the wall boundaries
-        int minX = spawnX - WALL_RADIUS - WALL_THICKNESS;
-        int maxX = spawnX + WALL_RADIUS + WALL_THICKNESS - width;
-        int minY = spawnY - WALL_RADIUS - WALL_THICKNESS;
-        int maxY = spawnY + WALL_RADIUS + WALL_THICKNESS - height;
+        int minX = spawnX - wallRadius - wallThickness;
+        int maxX = spawnX + wallRadius + wallThickness - width;
+        int minY = spawnY - wallRadius - wallThickness;
+        int maxY = spawnY + wallRadius + wallThickness - height;
 
         if (x < minX) {
             x = minX;
