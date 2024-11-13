@@ -8,7 +8,7 @@ public class BigSlotMachine extends SlotMachine implements Money{
     static int x;
     static int y;
     public BigSlotMachine(int numberOfSlots, int x, int y, PlayerMoney playerMoney) {
-        super(numberOfSlots);
+        super(numberOfSlots, "Big Slot Machine");
         this.x = x;
         this.y = y;
         // Pass the adjusted x and y to the SlotMachine constructor
@@ -26,8 +26,8 @@ public class BigSlotMachine extends SlotMachine implements Money{
         });
     }
     @Override
-    public void addMoney(PlayerMoney playerMoney){
-        playerMoney.money+=100;
+    public void addMoney(PlayerMoney playerMoney, int amount){
+        Money.super.addMoney(playerMoney, amount);
     }
     @Override
     public void removeMoney(PlayerMoney playerMoney, int amount){

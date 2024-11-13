@@ -11,10 +11,9 @@ public class Main extends JFrame {
         GamePanel gamePanel = new GamePanel();
         add(gamePanel);
         pack(); // Automatically size the window based on its content
-        setLocationRelativeTo(null); // Center the window on the screen
-
-        gamePanel.addSmallSlotMachine(-200,0);
-        gamePanel.addBigSlotMachine(200,0);
+        setLocationRelativeTo(null); // Center the window on the screen;
+        gamePanel.addSlotMachine(-200,0, Slots.SMALL);
+        gamePanel.addSlotMachine(200,0, Slots.BIG);
     }
 
     public static void main(String[] args) {

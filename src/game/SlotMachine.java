@@ -1,22 +1,25 @@
+// SlotMachine.java
 package game;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
+import javax.swing.*;
 
-public abstract class SlotMachine extends JPanel  {
+public abstract class SlotMachine extends JPanel {
     private int[] numbers;
     private Random random = new Random();
+    private String labelText;
 
-    public SlotMachine(int numberOfSlots) {
+    public SlotMachine(int numberOfSlots, String labelText) {
+        this.labelText = labelText;
         numbers = new int[numberOfSlots];
-        for(int i = 0; i < numberOfSlots; i++){
+        for (int i = 0; i < numberOfSlots; i++) {
             numbers[i] = 0;
         }
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
-   // Background color for the slot machine
+
         // Handle mouse click to trigger the slot machine's spin
         addMouseListener(new MouseAdapter() {
             @Override
@@ -29,18 +32,33 @@ public abstract class SlotMachine extends JPanel  {
 
     protected void spin() {
         for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = random.nextInt(10);// Random numbers between 0-9
+            numbers[i] = random.nextInt(10); // Random numbers between 0-9
         }
+    }
+
+    public void resetNumbers() {
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = 0;
+        }
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
+        // Draw the label text above the slot machine
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 16));
+        FontMetrics fm = g.getFontMetrics();
+        int labelX = (getWidth() - fm.stringWidth(labelText)) / 2;
+        int labelY = fm.getHeight();
+        g.drawString(labelText, labelX, labelY);
+
         // Render the slot machine's numbers on the screen
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        FontMetrics fm = g.getFontMetrics();
+        fm = g.getFontMetrics();
         int xPos = (getWidth() - (fm.stringWidth("0") * numbers.length + 20 * (numbers.length - 1))) / 2;
         int yPos = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
 

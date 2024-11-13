@@ -1,7 +1,9 @@
 package game;
 
 public interface Money {
-    void addMoney(PlayerMoney playerMoney);
+    default void addMoney(PlayerMoney playerMoney, int amount){
+        playerMoney.money += amount;
+    }
 
     default void removeMoney(PlayerMoney playerMoney, int amount){
         playerMoney.money -= amount;
