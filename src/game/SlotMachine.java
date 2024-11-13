@@ -13,7 +13,7 @@ public abstract class SlotMachine extends JPanel  {
     public SlotMachine(int numberOfSlots) {
         numbers = new int[numberOfSlots];
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
-        setBackground(Color.BLUE);  // Background color for the slot machine
+   // Background color for the slot machine
         // Handle mouse click to trigger the slot machine's spin
         addMouseListener(new MouseAdapter() {
             @Override

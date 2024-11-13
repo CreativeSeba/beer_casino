@@ -9,12 +9,21 @@ public class Player {
     private int x, y, size;
     private int speed;
     private Image playerImage;
+    private static int wallThickness;
+    private static int wallRadius;
+    private static int spawnX;
+    private static int spawnY;
 
-    public Player(int x, int y, int size, int speed) {
+    public Player(int x, int y, int size, int speed, int wallThickness, int wallRadius, int spawnX, int spawnY) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speed = speed;
+        this.wallThickness = wallThickness;
+        this.wallRadius = wallRadius;
+        this.spawnX = spawnX;
+        this.spawnY = spawnY;
+
         try {
             playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
         } catch (IOException e) {
@@ -48,21 +57,30 @@ public class Player {
 
     public void moveUp(double deltaTime) {
         y -= speed * deltaTime;
+        if(y<=spawnY-wallRadius+wallThickness) {
+            y = spawnY-wallRadius+wallThickness;
+        }
     }
 
     public void moveDown(double deltaTime) {
         y += speed * deltaTime;
+        if(y>=spawnY+wallRadius-wallThickness) {
+            y = spawnY+wallRadius-wallThickness;
+        }
     }
 
     public void moveLeft(double deltaTime) {
         x -= speed * deltaTime;
-//        if (x < -52) {
-//            x = -52;
-//        }
+        if(x<=spawnX-wallRadius+wallThickness) {
+            x = spawnX-wallRadius+wallThickness;
+        }
     }
 
     public void moveRight(double deltaTime) {
         x += speed * deltaTime;
+        if(x>=spawnX+wallRadius-wallThickness) {
+            x = spawnX+wallRadius-wallThickness;
+        }
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
