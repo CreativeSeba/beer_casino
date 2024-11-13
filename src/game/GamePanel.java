@@ -93,9 +93,9 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
-    public void addSlotMachine(int x, int y) {
+    public void addSmallSlotMachine(int x, int y) {
         int tx = SPAWN_X + x - player.getWidth() / 2;
-        int ty = SPAWN_Y + y - player.getHeight() / 2;
+        int ty = SPAWN_Y - y - player.getHeight() / 2;
         SmallSlotMachine slotMachine = new SmallSlotMachine(3, tx, ty);
         slotMachines.add(slotMachine);
         slotMachineAreas.add(new Rectangle(tx, ty, 100, 100));
