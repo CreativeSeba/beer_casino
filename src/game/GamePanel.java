@@ -28,12 +28,13 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final int SPAWN_X = 400;
     private static final int SPAWN_Y = 400;
 
+
     public GamePanel() {
         setPreferredSize(new Dimension(SPAWN_X*2, SPAWN_Y*2));
         setFocusable(true);
 
-        player = new Player(0, 0, 5, 300); // Increase speed to 300
-        player = new Player(SPAWN_X - player.getWidth() / 2, SPAWN_Y - player.getHeight() / 2, 5, 300); // Set correct position with increased speed
+        player = new Player(0, 0, 0, 300); // Increase speed to 300
+        player = new Player(SPAWN_X - player.getWidth() / 2, SPAWN_Y - player.getHeight() / 2, 100, 300); // Set correct position with increased speed
 
         pressedKeys = new HashSet<>();
         camera = new Camera(SPAWN_X*2, SPAWN_Y*2, SPAWN_X, SPAWN_Y, WALL_THICKNESS, WALL_RADIUS);
@@ -53,25 +54,34 @@ public class GamePanel extends JPanel implements ActionListener {
                 pressedKeys.add(e.getKeyCode());
                 if (e.getKeyCode() == KeyEvent.VK_E) {
                     for (int i = 0; i < slotMachineAreas.size(); i++) {
-                        if (slotMachineAreas.get(i).contains(player.getX(), player.getY())) {
-                            if (slotMachines.get(i) == null) {
-                                slotMachines.set(i, new SmallSlotMachine(3, SPAWN_X, SPAWN_Y));
-                                add(slotMachines.get(i));
-                                isSlotMachineActive = true;
-                                player.setX(slotMachineAreas.get(i).x + slotMachineAreas.get(i).width / 2 - player.getWidth() / 2);
-                                player.setY(slotMachineAreas.get(i).y + slotMachineAreas.get(i).height / 2 - player.getHeight() / 2);
-                            } else {
-                                remove(slotMachines.get(i));
-                                slotMachines.set(i, null);
-                                isSlotMachineActive = false;
+                        Rectangle slotMachineArea = slotMachineAreas.get(i);
+                        if (slotMachineArea.contains(player.getX(), player.getY())) {
+                            SmallSlotMachine slotMachine = slotMachines.get(i);
+
+                            if (slotMachine != null) {
+                                if (isSlotMachineActive) {
+                                    // Deactivate the slot machine
+                                    remove(slotMachine);
+                                    isSlotMachineActive = false;
+                                } else {
+                                    // Activate the slot machine
+                                    add(slotMachine);
+                                    isSlotMachineActive = true;
+
+                                    // Teleport the player to the center of the slot machine area
+                                    player.setX(slotMachineArea.x + slotMachineArea.width / 2);
+                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2);
+                                }
+                                revalidate();
+                                repaint();
+                                break;
                             }
-                            revalidate();
-                            repaint();
-                            break;
                         }
                     }
                 }
             }
+
+
 
             @Override
             public void keyReleased(KeyEvent e) {
@@ -84,11 +94,11 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void addSlotMachine(int x, int y) {
-        x-=player.getWidth()/2;
-        y-=player.getHeight()/2;
-        SmallSlotMachine slotMachine = new SmallSlotMachine(3, x, y,SPAWN_X, SPAWN_Y);
+        int tx = SPAWN_X + x - player.getWidth() / 2;
+        int ty = SPAWN_Y + y - player.getHeight() / 2;
+        SmallSlotMachine slotMachine = new SmallSlotMachine(3, tx, ty);
         slotMachines.add(slotMachine);
-        slotMachineAreas.add(new Rectangle(x, y, 100, 100));
+        slotMachineAreas.add(new Rectangle(tx, ty, 100, 100));
     }
 
     @Override

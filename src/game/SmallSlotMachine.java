@@ -1,26 +1,18 @@
-// src/game/SmallSlotMachine.java
 package game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class SmallSlotMachine extends SlotMachine implements Money {
-    private int x;
-    private int y;
-    static int spawnX;
-    static int spawnY;
-
-    public SmallSlotMachine(int numberOfSlots, int spawnX, int spawnY) {
-        this(numberOfSlots, 0, 0, spawnX, spawnY); // Default to spawn location
-    }
-
-    public SmallSlotMachine(int numberOfSlots, int x, int y, int spawnX, int spawnY) {
-        super(numberOfSlots, x, y);
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
+    static int x;
+    static int y;
+    public SmallSlotMachine(int numberOfSlots, int x, int y) {
+        super(numberOfSlots);
         this.x = x;
         this.y = y;
+         // Pass the adjusted x and y to the SlotMachine constructor
         setPreferredSize(new Dimension(200, 200));
         setBackground(Color.GREEN);
 
@@ -33,21 +25,14 @@ public class SmallSlotMachine extends SlotMachine implements Money {
         });
     }
 
-    public int getCustomX() {
-        return x;
-    }
-
-    public int getCustomY() {
-        return y;
-    }
 
     @Override
     public void addMoney(int amount) {
-
+        // Implement adding money logic here (if needed)
     }
 
     @Override
     public void removeMoney(int amount) {
-
+        // Implement removing money logic here (if needed)
     }
 }

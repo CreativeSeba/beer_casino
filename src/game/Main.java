@@ -13,9 +13,7 @@ public class Main extends JFrame {
         pack(); // Automatically size the window based on its content
         setLocationRelativeTo(null); // Center the window on the screen
 
-        gamePanel.addSlotMachine(400-50,400-50);
-        gamePanel.addSlotMachine(0, 0);
-        gamePanel.addSlotMachine(0, 0);
+        gamePanel.addSlotMachine(0,0);
     }
 
     public static void main(String[] args) {

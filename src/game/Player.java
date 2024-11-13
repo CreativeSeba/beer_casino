@@ -66,9 +66,9 @@ public class Player {
     }
 
     public void draw(Graphics g, int offsetX, int offsetY) {
-        int newSize = size * 20; // Increase the size by a factor of 20
-        int drawX = x - offsetX - newSize / 2 + size / 2; // Center the image horizontally
-        int drawY = y - offsetY - newSize / 2 + size / 2; // Center the image vertically
+        int newSize = size; // Increase the size by a factor of 20
+        int drawX = x - offsetX - newSize / 2; // Center the image horizontally
+        int drawY = y - offsetY - newSize / 2; // Center the image vertically
         if (playerImage != null) {
             g.drawImage(playerImage, drawX, drawY, newSize, newSize, null);
         } else {
