@@ -26,7 +26,7 @@ public abstract class SlotMachine extends JPanel  {
 
     protected void spin() {
         for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = random.nextInt(10);  // Random numbers between 0-9
+            numbers[i] = random.nextInt(10);// Random numbers between 0-9
         }
     }
 

@@ -1,16 +1,13 @@
 package game;
 
-import jdk.dynalink.NamedOperation;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LargeSlotMachine extends SlotMachine implements Money{
+public class BigSlotMachine extends SlotMachine implements Money{
     static int x;
     static int y;
-    public LargeSlotMachine(int numberOfSlots, int x, int y, PlayerMoney playerMoney) {
+    public BigSlotMachine(int numberOfSlots, int x, int y, PlayerMoney playerMoney) {
         super(numberOfSlots);
         this.x = x;
         this.y = y;

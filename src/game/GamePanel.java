@@ -18,18 +18,18 @@ public class GamePanel extends JPanel implements ActionListener {
     private Player player;
     private Set<Integer> pressedKeys;
     private Camera camera;
-    private BufferedImage backgroundImage;
+    private BufferedImage backgroundImage, smallSlotMachineImage, bigSlotMachineImage;
     private List<SmallSlotMachine> smallSlotMachines;
-    private List<LargeSlotMachine> largeSlotMachines;
-    private List<Rectangle> smallSlotMachineAreas, largeSlotMachineAreas;
+    private List<BigSlotMachine> bigSlotMachines;
+    private List<Rectangle> smallSlotMachineAreas, bigSlotMachineAreas;
 
 
 
     private boolean isSlotMachineActive = false;
 
     private static final int WALL_THICKNESS = 50;
-    private static final int WALL_RADIUS = 600;
-    private static final int SPAWN_X = 400;
+    private static final int WALL_RADIUS = 700;
+    private static final int SPAWN_X = 500;
     private static final int SPAWN_Y = 400;
     public PlayerMoney playerMoney = new PlayerMoney(1000);
 
@@ -46,14 +46,16 @@ public class GamePanel extends JPanel implements ActionListener {
 
         try {
             backgroundImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));
+            smallSlotMachineImage = ImageIO.read(new File("src/game/graphics/small-slot-machine.png"));
+            bigSlotMachineImage = ImageIO.read(new File("src/game/graphics/big-slot-machine.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         smallSlotMachines = new ArrayList<>();
         smallSlotMachineAreas = new ArrayList<>();
-        largeSlotMachines = new ArrayList<>();
-        largeSlotMachineAreas = new ArrayList<>();
+        bigSlotMachines = new ArrayList<>();
+        bigSlotMachineAreas = new ArrayList<>();
 
         addKeyListener(new KeyAdapter() {
             @Override
@@ -77,7 +79,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
                                     // Teleport the player to the center of the slot machine area
                                     player.setX(slotMachineArea.x + slotMachineArea.width / 2);
-                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2);
+                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2 + player.getHeight() / 4);
                                 }
                                 revalidate();
                                 repaint();
@@ -85,10 +87,10 @@ public class GamePanel extends JPanel implements ActionListener {
                             }
                         }
                     }
-                    for (int i = 0; i < largeSlotMachineAreas.size(); i++) {
-                        Rectangle slotMachineArea = largeSlotMachineAreas.get(i);
+                    for (int i = 0; i < bigSlotMachineAreas.size(); i++) {
+                        Rectangle slotMachineArea = bigSlotMachineAreas.get(i);
                         if (slotMachineArea.contains(player.getX(), player.getY())) {
-                            LargeSlotMachine slotMachine = largeSlotMachines.get(i);
+                            BigSlotMachine slotMachine = bigSlotMachines.get(i);
 
                             if (slotMachine != null) {
                                 if (isSlotMachineActive) {
@@ -102,7 +104,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
                                     // Teleport the player to the center of the slot machine area
                                     player.setX(slotMachineArea.x + slotMachineArea.width / 2);
-                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2);
+                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2 + player.getHeight() / 4);
                                 }
                                 revalidate();
                                 repaint();
@@ -126,18 +128,23 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void addSmallSlotMachine(int x, int y) {
-        int tx = SPAWN_X + x - player.getWidth() / 2;
-        int ty = SPAWN_Y - y - player.getHeight() / 2;
+        int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
+        int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
+        int tx = SPAWN_X + x - slotMachineWidth / 2;
+        int ty = SPAWN_Y - y - slotMachineHeight / 2;
         SmallSlotMachine slotMachine = new SmallSlotMachine(3, tx, ty, playerMoney);
         smallSlotMachines.add(slotMachine);
-        smallSlotMachineAreas.add(new Rectangle(tx, ty, 100, 100));
+        smallSlotMachineAreas.add(new Rectangle(tx, ty, slotMachineWidth, slotMachineHeight));
     }
-    public void addLargeSlotMachine(int x, int y) {
-        int tx = SPAWN_X + x - player.getWidth() / 2;
-        int ty = SPAWN_Y - y - player.getHeight() / 2;
-        LargeSlotMachine slotMachine = new LargeSlotMachine(5, tx, ty, playerMoney);
-        largeSlotMachines.add(slotMachine);
-        largeSlotMachineAreas.add(new Rectangle(tx, ty, 100, 100));
+
+    public void addBigSlotMachine(int x, int y) {
+        int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
+        int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
+        int tx = SPAWN_X + x - slotMachineWidth / 2;
+        int ty = SPAWN_Y - y - slotMachineHeight / 2;
+        BigSlotMachine slotMachine = new BigSlotMachine(5, tx, ty, playerMoney);
+        bigSlotMachines.add(slotMachine);
+        bigSlotMachineAreas.add(new Rectangle(tx, ty, slotMachineWidth, slotMachineHeight));
     }
 
     @Override
@@ -163,14 +170,32 @@ public class GamePanel extends JPanel implements ActionListener {
         g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
         g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y + WALL_RADIUS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
 
-        // Draw the slot machine areas
-        g.setColor(Color.GREEN);
+        // Draw the small slot machine areas with images
         for (Rectangle area : smallSlotMachineAreas) {
-            g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
+            if (smallSlotMachineImage != null) {
+                int imageWidth = (int) (area.width * 1.5);
+                int imageHeight = (int) (area.height * 1.5);
+                int centerX = area.x + area.width / 2 - camera.getX();
+                int centerY = area.y + area.height / 2 - camera.getY();
+                g.drawImage(smallSlotMachineImage, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
+            } else {
+                g.setColor(Color.GREEN);
+                g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
+            }
         }
-        g.setColor(Color.RED);
-        for (Rectangle area : largeSlotMachineAreas) {
-            g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
+
+        // Draw the large slot machine areas
+        for (Rectangle area : bigSlotMachineAreas) {
+            if (bigSlotMachineImage != null) {
+                int imageWidth = (int) (area.width * 1.5);
+                int imageHeight = (int) (area.height * 1.5);
+                int centerX = area.x + area.width / 2 - camera.getX();
+                int centerY = area.y + area.height / 2 - camera.getY();
+                g.drawImage(bigSlotMachineImage, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
+            } else {
+                g.setColor(Color.RED);
+                g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
+            }
         }
 
         camera.update(player);

@@ -34,4 +34,6 @@ public class SmallSlotMachine extends SlotMachine implements Money{
     public void removeMoney(PlayerMoney playerMoney, int amount){
         Money.super.removeMoney(playerMoney, amount);
     }
+
+
 }
