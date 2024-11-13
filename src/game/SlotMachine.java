@@ -12,6 +12,9 @@ public abstract class SlotMachine extends JPanel  {
 
     public SlotMachine(int numberOfSlots) {
         numbers = new int[numberOfSlots];
+        for(int i = 0; i < numberOfSlots; i++){
+            numbers[i] = 0;
+        }
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
    // Background color for the slot machine
         // Handle mouse click to trigger the slot machine's spin
