@@ -210,6 +210,13 @@ public class GamePanel extends JPanel implements ActionListener {
             }
         }
 
+        // Draw the player's money in the top right corner
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+        String moneyText = "Money: $" + playerMoney.money;
+        int textWidth = g.getFontMetrics().stringWidth(moneyText);
+        g.drawString(moneyText, getWidth() - textWidth - 10, 30);
+
         camera.update(player);
         player.draw(g, camera.getX(), camera.getY()); // Draw the player entity relative to the camera
     }

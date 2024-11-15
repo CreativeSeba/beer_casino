@@ -1,6 +1,7 @@
 package game;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class Main extends JFrame {
     public Main() {
@@ -12,6 +13,7 @@ public class Main extends JFrame {
         add(gamePanel);
         pack(); // Automatically size the window based on its content
         setLocationRelativeTo(null); // Center the window on the screen;
+
         //SMALL
         gamePanel.addSlotMachine(-200,0, Slots.SMALL);
 

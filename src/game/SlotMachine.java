@@ -4,11 +4,16 @@ package game;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
+import java.util.List;
+
 
 public abstract class SlotMachine extends JPanel {
     private int[] numbers;
+    private int[] numCount;
+    private List<Pair<Integer, Integer>> combinations = new ArrayList<>();
     private Random random = new Random();
     private String labelText;
 
@@ -31,9 +36,31 @@ public abstract class SlotMachine extends JPanel {
     }
 
     protected void spin() {
+        combinations.clear(); // Clear previous combinations
+        numCount = new int[10]; // Reset numCount array
+
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = random.nextInt(10); // Random numbers between 0-9
+            int curr = numbers[i];
+            if (i == 0) {
+                numCount[curr]++;
+            } else {
+                int prev = numbers[i - 1];
+                if (curr == prev) {
+                    numCount[curr]++;
+                } else {
+                    combinations.add(new Pair<>(prev, numCount[prev]));
+                    numCount[prev] = 0;
+                    numCount[curr]++;
+                }
+            }
         }
+
+        for (Pair<Integer, Integer> pair : combinations) {
+            System.out.println(pair.getKey() + " " + pair.getValue());
+        }
+        System.out.println("\n\n\n");
+        combinations.clear();
     }
 
     public void resetNumbers() {

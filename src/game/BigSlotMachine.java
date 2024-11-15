@@ -19,7 +19,6 @@ public class BigSlotMachine extends SlotMachine implements Money{
             @Override
             public void mouseClicked(MouseEvent e) {
                 removeMoney(playerMoney, 100);
-                System.out.println(playerMoney.money);
                 spin();
                 repaint();
             }
