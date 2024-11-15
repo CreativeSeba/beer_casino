@@ -34,7 +34,7 @@ public abstract class SlotMachine extends JPanel {
             }
         });
     }
-
+    //
     protected void spin() {
         combinations.clear(); // Clear previous combinations
         numCount = new int[10]; // Reset numCount array
