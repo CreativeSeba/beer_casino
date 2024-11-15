@@ -16,9 +16,11 @@ public abstract class SlotMachine extends JPanel {
     private List<Pair<Integer, Integer>> combinations = new ArrayList<>();
     private Random random = new Random();
     private String labelText;
+    private int numberOfSlots;
 
     public SlotMachine(int numberOfSlots, String labelText) {
         this.labelText = labelText;
+        this.numberOfSlots = numberOfSlots;
         numbers = new int[numberOfSlots];
         for (int i = 0; i < numberOfSlots; i++) {
             numbers[i] = 0;
@@ -36,10 +38,9 @@ public abstract class SlotMachine extends JPanel {
     }
     //
     protected void spin() {
-        combinations.clear(); // Clear previous combinations
         numCount = new int[10]; // Reset numCount array
 
-        for (int i = 0; i < numbers.length; i++) {
+        for (int i = 0; i < numberOfSlots; i++) {
             numbers[i] = random.nextInt(10); // Random numbers between 0-9
             int curr = numbers[i];
             if (i == 0) {
