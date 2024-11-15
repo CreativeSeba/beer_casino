@@ -10,21 +10,30 @@ import javax.swing.*;
 import java.util.List;
 
 
-public abstract class SlotMachine extends JPanel {
+public abstract class SlotMachine extends JPanel implements Money {
     private int[] numbers;
-    private int[] numCount;
-    private List<Pair<Integer, Integer>> combinations = new ArrayList<>();
+    private List<Pair<Integer, Integer>> combinations;
     private Random random = new Random();
     private String labelText;
     private int numberOfSlots;
+    private Pair<Integer, Integer> numCount;
+    public static PlayerMoney playerMoney;
 
-    public SlotMachine(int numberOfSlots, String labelText) {
-        this.labelText = labelText;
+    public SlotMachine(int numberOfSlots, Slots type, int loose) {
+        switch(type){
+            case SMALL:
+                this.labelText = "Small Slot Machine";
+                break;
+            case BIG:
+                this.labelText = "Big Slot Machine";
+                break;
+            default:
+                this.labelText = "Slot Machine";
+        }
         this.numberOfSlots = numberOfSlots;
         numbers = new int[numberOfSlots];
-        for (int i = 0; i < numberOfSlots; i++) {
-            numbers[i] = 0;
-        }
+        combinations = new ArrayList<>();
+        playerMoney = new PlayerMoney(10000);
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
 
         // Handle mouse click to trigger the slot machine's spin
@@ -32,36 +41,43 @@ public abstract class SlotMachine extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 spin();
+                removeMoney(playerMoney, loose);
+
+                for(Pair<Integer, Integer> pair : combinations) {
+                    System.out.println(pair.first + " " + pair.second);
+                }
+                System.out.println("\n");
                 repaint();
             }
         });
-    }
-    //
-    protected void spin() {
-        numCount = new int[10]; // Reset numCount array
 
+    }
+
+    protected void spin() {
+        combinations.clear();
+        Pair<Integer, Integer> numCount = new Pair<>(0, 0);
+        for (int i = 0; i < numberOfSlots; i++) {
+            numbers[i] = 0;
+        }
         for (int i = 0; i < numberOfSlots; i++) {
             numbers[i] = random.nextInt(10); // Random numbers between 0-9
             int curr = numbers[i];
             if (i == 0) {
-                numCount[curr]++;
+                numCount.first = curr;
+                numCount.second = 1;
             } else {
                 int prev = numbers[i - 1];
                 if (curr == prev) {
-                    numCount[curr]++;
+                    numCount.second++;
                 } else {
-                    combinations.add(new Pair<>(prev, numCount[prev]));
-                    numCount[prev] = 0;
-                    numCount[curr]++;
+                    combinations.add(new Pair<>(numCount.first, numCount.second));
+                    numCount.first = curr;
+                    numCount.second = 1;
                 }
             }
         }
-
-        for (Pair<Integer, Integer> pair : combinations) {
-            System.out.println(pair.getKey() + " " + pair.getValue());
-        }
-        System.out.println("\n\n\n");
-        combinations.clear();
+        combinations.add(new Pair<>(numCount.first, numCount.second));
+        repaint(); // Trigger repaint to update the slot machine window
     }
 
     public void resetNumbers() {
@@ -69,6 +85,14 @@ public abstract class SlotMachine extends JPanel {
             numbers[i] = 0;
         }
         repaint();
+    }
+    @Override
+    public void addMoney(PlayerMoney playerMoney, int amount){
+        Money.super.addMoney(playerMoney, amount);
+    }
+    @Override
+    public void removeMoney(PlayerMoney playerMoney, int amount){
+        Money.super.removeMoney(playerMoney, amount);
     }
 
     @Override

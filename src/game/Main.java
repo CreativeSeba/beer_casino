@@ -9,6 +9,9 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
+        ImageIcon icon = new ImageIcon("src/game/graphics/icon.png");
+        setIconImage(icon.getImage());
+
         GamePanel gamePanel = new GamePanel();
         add(gamePanel);
         pack(); // Automatically size the window based on its content

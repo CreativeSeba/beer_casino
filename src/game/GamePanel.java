@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements ActionListener {
     private static final int WALL_RADIUS = 700;
     private static final int SPAWN_X = 500;
     private static final int SPAWN_Y = 400;
-    public PlayerMoney playerMoney = new PlayerMoney(1000);
+    private PlayerMoney playerMoney = SlotMachine.playerMoney;
 
     public GamePanel() {
         setPreferredSize(new Dimension(SPAWN_X * 2, SPAWN_Y * 2));
@@ -140,7 +140,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 int smallSlotMachineHeight = player.getHeight() + player.getHeight() / 4;
                 int stx = SPAWN_X + x - smallSlotMachineWidth / 2;
                 int sty = SPAWN_Y - y - smallSlotMachineHeight / 2;
-                SmallSlotMachine smallSlotMachine = new SmallSlotMachine(3, stx, sty, playerMoney);
+                SmallSlotMachine smallSlotMachine = new SmallSlotMachine(3, stx, sty);
                 smallSlotMachines.add(smallSlotMachine);
                 smallSlotMachineAreas.add(new Rectangle(stx, sty, smallSlotMachineWidth, smallSlotMachineHeight));
                 break;
@@ -149,7 +149,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 int bigSlotMachineHeight = player.getHeight() + player.getHeight() / 4;
                 int btx = SPAWN_X + x - bigSlotMachineWidth / 2;
                 int bty = SPAWN_Y - y - bigSlotMachineHeight / 2;
-                BigSlotMachine bigSlotMachine = new BigSlotMachine(5, btx, bty, playerMoney);
+                BigSlotMachine bigSlotMachine = new BigSlotMachine(5, btx, bty);
                 bigSlotMachines.add(bigSlotMachine);
                 bigSlotMachineAreas.add(new Rectangle(btx, bty, bigSlotMachineWidth, bigSlotMachineHeight));
                 break;
