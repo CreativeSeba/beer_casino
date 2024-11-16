@@ -24,13 +24,17 @@ public class GamePanel extends JPanel implements ActionListener {
     private boolean isSlotMachineActive = false;
     private SlotMachine activeSlotMachine;
 
-    private static final int WALL_THICKNESS = 50;
-    private static final int WALL_RADIUS = 700;
-    private static final int SPAWN_X = 500;
-    private static final int SPAWN_Y = 400;
+    private static int WALL_THICKNESS;
+    private static int WALL_RADIUS;
+    private static int SPAWN_X;
+    private static int SPAWN_Y;
     private PlayerMoney playerMoney = SlotMachine.playerMoney;
 
-    public GamePanel() {
+    public GamePanel(int SPAWN_X, int SPAWN_Y, int WALL_RADIUS, int WALL_THICKNESS) {
+        this.SPAWN_X = SPAWN_X;
+        this.SPAWN_Y = SPAWN_Y;
+        this.WALL_RADIUS = WALL_RADIUS;
+        this.WALL_THICKNESS = WALL_THICKNESS;
         setPreferredSize(new Dimension(SPAWN_X * 2, SPAWN_Y * 2));
         setFocusable(true);
 
@@ -213,7 +217,7 @@ public class GamePanel extends JPanel implements ActionListener {
         // Draw the player's money in the top right corner
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
-        String moneyText = "Money: $" + playerMoney.money;
+        String moneyText = "Chips: " + playerMoney.money;
         int textWidth = g.getFontMetrics().stringWidth(moneyText);
         g.drawString(moneyText, getWidth() - textWidth - 10, 30);
 

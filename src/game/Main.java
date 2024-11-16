@@ -1,7 +1,6 @@
 package game;
 
 import javax.swing.*;
-import java.util.ArrayList;
 
 public class Main extends JFrame {
     public Main() {
@@ -12,7 +11,7 @@ public class Main extends JFrame {
         ImageIcon icon = new ImageIcon("src/game/graphics/icon.png");
         setIconImage(icon.getImage());
 
-        GamePanel gamePanel = new GamePanel();
+        GamePanel gamePanel = new GamePanel(500, 400, 700, 50);
         add(gamePanel);
         pack(); // Automatically size the window based on its content
         setLocationRelativeTo(null); // Center the window on the screen;
@@ -22,6 +21,7 @@ public class Main extends JFrame {
 
         //BIG
         gamePanel.addSlotMachine(200,0, Slots.BIG);
+
     }
 
     public static void main(String[] args) {

@@ -1,4 +1,3 @@
-// SlotMachine.java
 package game;
 
 import java.awt.*;
