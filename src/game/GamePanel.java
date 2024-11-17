@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements ActionListener {
         player = new Player(SPAWN_X - player.getWidth() / 2, SPAWN_Y - player.getHeight() / 2, 100, 300, WALL_THICKNESS, WALL_RADIUS, SPAWN_X, SPAWN_Y); // Set correct position with increased speed
 
         pressedKeys = new HashSet<>();
-        camera = new Camera(SPAWN_X * 2, SPAWN_Y * 2, SPAWN_X, SPAWN_Y, WALL_THICKNESS, WALL_RADIUS);
+        camera = new Camera(SPAWN_X, SPAWN_Y, WALL_THICKNESS, WALL_RADIUS);
 
         try {
             backgroundImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));
@@ -224,7 +224,6 @@ public class GamePanel extends JPanel implements ActionListener {
         camera.update(player);
         player.draw(g, camera.getX(), camera.getY()); // Draw the player entity relative to the camera
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!isSlotMachineActive) {
@@ -234,6 +233,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     private void updatePlayerPosition() {
+
         double deltaTime = 0.016; // Assuming 60 FPS, so each frame is roughly 0.016 seconds
         if (pressedKeys.contains(KeyEvent.VK_W)) {
             player.moveUp(deltaTime);

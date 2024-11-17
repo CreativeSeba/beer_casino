@@ -8,7 +8,6 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        // Set the screen size explicitly
         int screenWidth = 1100;
         int screenHeight = 800;
         setSize(screenWidth, screenHeight);
@@ -20,10 +19,7 @@ public class Main extends JFrame {
         add(gamePanel);
         setLocationRelativeTo(null); // Center the window on the screen
 
-        // Calculate positions to center the slot machines
 
-
-        // Add slot machines
         gamePanel.addSlotMachine(-200, 0, Slots.SMALL);
         gamePanel.addSlotMachine(200, 0, Slots.BIG);
     }
