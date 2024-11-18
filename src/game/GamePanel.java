@@ -181,10 +181,20 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // Draw the walls
         g.setColor(Color.BLACK);
-        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), WALL_THICKNESS, 2 * WALL_RADIUS + 2 * WALL_THICKNESS);
-        g.fillRect(SPAWN_X + WALL_RADIUS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), WALL_THICKNESS, 2 * WALL_RADIUS + 2 * WALL_THICKNESS);
-        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
-        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y + WALL_RADIUS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
+
+// Calculate wall positions and dimensions
+        int leftWallX = SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX();
+        int rightWallX = SPAWN_X + WALL_RADIUS - camera.getX();
+        int topWallY = SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY();
+        int bottomWallY = SPAWN_Y + WALL_RADIUS - WALL_THICKNESS - camera.getY();
+        int wallHeight = 2 * WALL_RADIUS + 2 * WALL_THICKNESS;
+        int wallWidth = WALL_THICKNESS;
+
+// Draw the walls
+        g.fillRect(leftWallX, topWallY, wallWidth, wallHeight); // Left wall
+        g.fillRect(rightWallX, topWallY, wallWidth, wallHeight); // Right wall
+        g.fillRect(leftWallX, topWallY, wallHeight, wallWidth); // Top wall
+        g.fillRect(leftWallX, bottomWallY, wallHeight, wallWidth); // Bottom wall
 
         // Draw the small slot machine areas with images
         for (Rectangle area : smallSlotMachineAreas) {
@@ -246,6 +256,9 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if (pressedKeys.contains(KeyEvent.VK_D)) {
             player.moveRight(deltaTime);
+        }
+        if (pressedKeys.contains(KeyEvent.VK_SPACE)) {
+            System.out.println(camera.getX() + " " + camera.getY());
         }
     }
 }
