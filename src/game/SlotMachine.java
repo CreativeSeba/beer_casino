@@ -17,9 +17,10 @@ public abstract class SlotMachine extends JPanel implements Money {
     private int numberOfSlots;
     private Pair<Integer, Integer> numCount;
     public static PlayerMoney playerMoney;
+    Slots type;
 
     public SlotMachine(int numberOfSlots, Slots type, int loose) {
-        switch(type){
+        switch (type) {
             case SMALL:
                 this.labelText = "Small Slot Machine";
                 break;
@@ -30,29 +31,35 @@ public abstract class SlotMachine extends JPanel implements Money {
                 this.labelText = "Slot Machine";
         }
         this.numberOfSlots = numberOfSlots;
+        this.type = type;
         numbers = new int[numberOfSlots];
         combinations = new ArrayList<>();
-        playerMoney = new PlayerMoney(10000);
+        playerMoney = new PlayerMoney(5000);
+
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
 
         // Handle mouse click to trigger the slot machine's spin
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                spin();
-                removeMoney(playerMoney, loose);
-
-                for(Pair<Integer, Integer> pair : combinations) {
-                    System.out.println(pair.first + " " + pair.second);
+                if (playerMoney.money > 0) {
+                    spin();
+                    removeMoney(playerMoney, loose);
+                    //combinations.add(0, new Pair<>(1, 3));
+                    for (Pair<Integer, Integer> pair : combinations) {
+                        System.out.println(pair.first + " " + pair.second);
+                    }
+                    setCombinations();
+                    System.out.println("\n");
+                    repaint();
+                } else {
+                    System.out.println("Przegrales ");
                 }
-                System.out.println("\n");
-                repaint();
             }
         });
-
     }
 
-    protected void spin() {
+    private void spin() {
         combinations.clear();
         Pair<Integer, Integer> numCount = new Pair<>(0, 0);
         for (int i = 0; i < numberOfSlots; i++) {
@@ -79,18 +86,61 @@ public abstract class SlotMachine extends JPanel implements Money {
         repaint(); // Trigger repaint to update the slot machine window
     }
 
+    private void setCombinations(){
+        boolean win = true;
+        int i = 0;
+        switch (type) {
+            case SMALL:
+                    for (Pair<Integer, Integer> pair : combinations) {
+                        if(i != 0 && i%2==0 && combinations.get(i-2).first != pair.first){
+                            win = false;
+                        }
+                        else if (pair.second == numberOfSlots) {
+                            addMoney(playerMoney, 1000);
+                            System.out.println("Wygrana big");
+                        }
+                        i++;
+                    }
+                    if(win){
+                        addMoney(playerMoney, 300);
+                        System.out.println("Wygrana z cando");
+                    }
+                break;
+            case BIG:
+                for (Pair<Integer, Integer> pair : combinations) {
+                    if(i != 0 && i%2==0 && combinations.get(i-2).first != pair.first){
+                        win = false;
+                    }
+                    else if(pair.second == numberOfSlots){
+                        addMoney(playerMoney, 10000);
+                        System.out.println("Wygrana big");
+                    }
+                    i++;
+                }
+                if(win){
+                    addMoney(playerMoney, 300);
+                    System.out.println("Wygrana z cando");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     public void resetNumbers() {
         for (int i = 0; i < numbers.length; i++) {
             numbers[i] = 0;
         }
         repaint();
     }
+
     @Override
-    public void addMoney(PlayerMoney playerMoney, int amount){
+    public void addMoney(PlayerMoney playerMoney, int amount) {
         Money.super.addMoney(playerMoney, amount);
     }
+
     @Override
-    public void removeMoney(PlayerMoney playerMoney, int amount){
+    public void removeMoney(PlayerMoney playerMoney, int amount) {
         Money.super.removeMoney(playerMoney, amount);
     }
 

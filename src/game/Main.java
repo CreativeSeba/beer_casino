@@ -8,20 +8,22 @@ public class Main extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
 
-        int screenWidth = 1100;
-        int screenHeight = 800;
-        setSize(screenWidth, screenHeight);
-
         ImageIcon icon = new ImageIcon("src/game/graphics/icon.png");
         setIconImage(icon.getImage());
+        int screenWidth = 1000;
+        int screenHeight = 700;
 
-        GamePanel gamePanel = new GamePanel(screenWidth/2, screenHeight/2, 700, 50);
+        GamePanel gamePanel = new GamePanel(screenWidth, screenHeight, 750, 50);
         add(gamePanel);
-        setLocationRelativeTo(null); // Center the window on the screen
+        pack(); // Automatically size the window based on its content
+        setLocationRelativeTo(null); // Center the window on the screen;
 
+        //SMALL
+        gamePanel.addSlotMachine(-200,0, Slots.SMALL);
 
-        gamePanel.addSlotMachine(-200, 0, Slots.SMALL);
-        gamePanel.addSlotMachine(200, 0, Slots.BIG);
+        //BIG
+        gamePanel.addSlotMachine(200,0, Slots.BIG);
+
     }
 
     public static void main(String[] args) {

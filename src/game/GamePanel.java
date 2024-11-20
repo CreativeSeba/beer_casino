@@ -31,18 +31,18 @@ public class GamePanel extends JPanel implements ActionListener {
     private PlayerMoney playerMoney = SlotMachine.playerMoney;
 
     public GamePanel(int SPAWN_X, int SPAWN_Y, int WALL_RADIUS, int WALL_THICKNESS) {
-        this.SPAWN_X = SPAWN_X;
-        this.SPAWN_Y = SPAWN_Y;
+        this.SPAWN_X = SPAWN_X/2;
+        this.SPAWN_Y = SPAWN_Y/2;
         this.WALL_RADIUS = WALL_RADIUS;
         this.WALL_THICKNESS = WALL_THICKNESS;
-        setPreferredSize(new Dimension(SPAWN_X * 2, SPAWN_Y * 2));
+        setPreferredSize(new Dimension(SPAWN_X, SPAWN_Y));
         setFocusable(true);
 
         player = new Player(0, 0, 0, 300, WALL_THICKNESS, WALL_RADIUS, SPAWN_X, SPAWN_Y); // Increase speed to 300
-        player = new Player(SPAWN_X - player.getWidth() / 2, SPAWN_Y - player.getHeight() / 2, 100, 300, WALL_THICKNESS, WALL_RADIUS, SPAWN_X, SPAWN_Y); // Set correct position with increased speed
+        player = new Player(this.SPAWN_X - player.getWidth() / 2, this.SPAWN_Y - player.getHeight() / 2, 100, 300, WALL_THICKNESS, WALL_RADIUS, this.SPAWN_X, this.SPAWN_Y); // Set correct position with increased speed
 
         pressedKeys = new HashSet<>();
-        camera = new Camera(SPAWN_X, SPAWN_Y, WALL_THICKNESS, WALL_RADIUS);
+        camera = new Camera(SPAWN_X, SPAWN_Y, this.SPAWN_X, this.SPAWN_Y, WALL_THICKNESS, WALL_RADIUS);
 
         try {
             backgroundImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));
@@ -133,10 +133,6 @@ public class GamePanel extends JPanel implements ActionListener {
         timer.start();
     }
 
-    public void addSmallSlotMachine(int x, int y) {
-
-    }
-
     public void addSlotMachine(int x, int y, Slots type) {
         switch (type) {
             case SMALL:
@@ -181,20 +177,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
         // Draw the walls
         g.setColor(Color.BLACK);
-
-// Calculate wall positions and dimensions
-        int leftWallX = SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX();
-        int rightWallX = SPAWN_X + WALL_RADIUS - camera.getX();
-        int topWallY = SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY();
-        int bottomWallY = SPAWN_Y + WALL_RADIUS - WALL_THICKNESS - camera.getY();
-        int wallHeight = 2 * WALL_RADIUS + 2 * WALL_THICKNESS;
-        int wallWidth = WALL_THICKNESS;
-
-// Draw the walls
-        g.fillRect(leftWallX, topWallY, wallWidth, wallHeight); // Left wall
-        g.fillRect(rightWallX, topWallY, wallWidth, wallHeight); // Right wall
-        g.fillRect(leftWallX, topWallY, wallHeight, wallWidth); // Top wall
-        g.fillRect(leftWallX, bottomWallY, wallHeight, wallWidth); // Bottom wall
+        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), WALL_THICKNESS, 2 * WALL_RADIUS + 2 * WALL_THICKNESS);
+        g.fillRect(SPAWN_X + WALL_RADIUS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), WALL_THICKNESS, 2 * WALL_RADIUS + 2 * WALL_THICKNESS);
+        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y - WALL_RADIUS - WALL_THICKNESS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
+        g.fillRect(SPAWN_X - WALL_RADIUS - WALL_THICKNESS - camera.getX(), SPAWN_Y + WALL_RADIUS - camera.getY(), 2 * WALL_RADIUS + 2 * WALL_THICKNESS, WALL_THICKNESS);
 
         // Draw the small slot machine areas with images
         for (Rectangle area : smallSlotMachineAreas) {
@@ -234,6 +220,7 @@ public class GamePanel extends JPanel implements ActionListener {
         camera.update(player);
         player.draw(g, camera.getX(), camera.getY()); // Draw the player entity relative to the camera
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!isSlotMachineActive) {
@@ -243,7 +230,6 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     private void updatePlayerPosition() {
-
         double deltaTime = 0.016; // Assuming 60 FPS, so each frame is roughly 0.016 seconds
         if (pressedKeys.contains(KeyEvent.VK_W)) {
             player.moveUp(deltaTime);
@@ -256,9 +242,6 @@ public class GamePanel extends JPanel implements ActionListener {
         }
         if (pressedKeys.contains(KeyEvent.VK_D)) {
             player.moveRight(deltaTime);
-        }
-        if (pressedKeys.contains(KeyEvent.VK_SPACE)) {
-            System.out.println(camera.getX() + " " + camera.getY());
         }
     }
 }
