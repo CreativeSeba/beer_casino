@@ -13,7 +13,7 @@ public class Main extends JFrame {
         int screenWidth = 1000;
         int screenHeight = 700;
 
-        GamePanel gamePanel = new GamePanel(screenWidth, screenHeight, 750, 50);
+        GamePanel gamePanel = new GamePanel(screenWidth, screenHeight, 750, 50, 10000);
         add(gamePanel);
         pack(); // Automatically size the window based on its content
         setLocationRelativeTo(null); // Center the window on the screen;

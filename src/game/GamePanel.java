@@ -28,13 +28,14 @@ public class GamePanel extends JPanel implements ActionListener {
     private static int WALL_RADIUS;
     private static int SPAWN_X;
     private static int SPAWN_Y;
-    private PlayerMoney playerMoney = SlotMachine.playerMoney;
+    public static PlayerMoney playerMoney;
 
-    public GamePanel(int SPAWN_X, int SPAWN_Y, int WALL_RADIUS, int WALL_THICKNESS) {
+    public GamePanel(int SPAWN_X, int SPAWN_Y, int WALL_RADIUS, int WALL_THICKNESS, int money) {
         this.SPAWN_X = SPAWN_X/2;
         this.SPAWN_Y = SPAWN_Y/2;
         this.WALL_RADIUS = WALL_RADIUS;
         this.WALL_THICKNESS = WALL_THICKNESS;
+        this.playerMoney = new PlayerMoney(money);
         setPreferredSize(new Dimension(SPAWN_X, SPAWN_Y));
         setFocusable(true);
 

@@ -10,16 +10,20 @@ import java.util.List;
 
 
 public abstract class SlotMachine extends JPanel implements Money {
-    private int[] numbers;
-    private List<Pair<Integer, Integer>> combinations;
+    protected int[] numbers;
+    public static List<Pair<Integer, Integer>> combinations;
     private Random random = new Random();
     private String labelText;
     private int numberOfSlots;
-    private Pair<Integer, Integer> numCount;
-    public static PlayerMoney playerMoney;
+    private PlayerMoney playerMoney = GamePanel.playerMoney;
     Slots type;
 
     public SlotMachine(int numberOfSlots, Slots type, int loose) {
+        this.numberOfSlots = numberOfSlots;
+        this.type = type;
+        numbers = new int[numberOfSlots];
+        combinations = new ArrayList<>();
+
         switch (type) {
             case SMALL:
                 this.labelText = "Small Slot Machine";
@@ -30,12 +34,6 @@ public abstract class SlotMachine extends JPanel implements Money {
             default:
                 this.labelText = "Slot Machine";
         }
-        this.numberOfSlots = numberOfSlots;
-        this.type = type;
-        numbers = new int[numberOfSlots];
-        combinations = new ArrayList<>();
-        playerMoney = new PlayerMoney(5000);
-
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
 
         // Handle mouse click to trigger the slot machine's spin
@@ -45,7 +43,12 @@ public abstract class SlotMachine extends JPanel implements Money {
                 if (playerMoney.money > 0) {
                     spin();
                     removeMoney(playerMoney, loose);
-                    //combinations.add(0, new Pair<>(1, 3));
+//                    combinations.clear();
+//                    combinations.add(0, new Pair<>(1, 3));
+//                    combinations.add(1, new Pair<>(2, 1));
+//                    combinations.add(2, new Pair<>(4, 1));
+//                    numbers = new int[]{1, 1, 1, 2, 1};
+
                     for (Pair<Integer, Integer> pair : combinations) {
                         System.out.println(pair.first + " " + pair.second);
                     }
@@ -83,49 +86,9 @@ public abstract class SlotMachine extends JPanel implements Money {
             }
         }
         combinations.add(new Pair<>(numCount.first, numCount.second));
-        repaint(); // Trigger repaint to update the slot machine window
+        repaint();
     }
-
-    private void setCombinations(){
-        boolean win = true;
-        int i = 0;
-        switch (type) {
-            case SMALL:
-                    for (Pair<Integer, Integer> pair : combinations) {
-                        if(i != 0 && i%2==0 && combinations.get(i-2).first != pair.first){
-                            win = false;
-                        }
-                        else if (pair.second == numberOfSlots) {
-                            addMoney(playerMoney, 1000);
-                            System.out.println("Wygrana big");
-                        }
-                        i++;
-                    }
-                    if(win){
-                        addMoney(playerMoney, 300);
-                        System.out.println("Wygrana z cando");
-                    }
-                break;
-            case BIG:
-                for (Pair<Integer, Integer> pair : combinations) {
-                    if(i != 0 && i%2==0 && combinations.get(i-2).first != pair.first){
-                        win = false;
-                    }
-                    else if(pair.second == numberOfSlots){
-                        addMoney(playerMoney, 10000);
-                        System.out.println("Wygrana big");
-                    }
-                    i++;
-                }
-                if(win){
-                    addMoney(playerMoney, 300);
-                    System.out.println("Wygrana z cando");
-                }
-                break;
-            default:
-                break;
-        }
-    }
+    abstract void setCombinations();
 
     public void resetNumbers() {
         for (int i = 0; i < numbers.length; i++) {
