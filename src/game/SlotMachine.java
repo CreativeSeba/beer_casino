@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.util.List;
 
 
-public abstract class SlotMachine extends JPanel implements Money {
+public abstract class SlotMachine extends GamePanel implements Money {
     protected int[] numbers;
     public static List<Pair<Integer, Integer>> combinations;
     private Random random = new Random();
