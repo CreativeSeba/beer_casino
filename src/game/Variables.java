@@ -9,12 +9,7 @@ import java.util.Set;
 public abstract class Variables extends JPanel{
     protected static Timer timer;
     protected static Set<Integer> pressedKeys;
-    protected static int WALL_THICKNESS;
-    protected static int WALL_RADIUS;
-    protected static int SPAWN_X;
-    protected static int SPAWN_Y;
-    protected static int HEIGHT;
-    protected static int WIDTH;
+    protected static int wallThickness, wallRadius, spawnX, spawnY, height, width;
     protected static Camera camera;
     protected static Player player;
     protected static Wall wall;

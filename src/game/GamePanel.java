@@ -13,14 +13,14 @@ import java.util.HashSet;
 public class GamePanel extends Variables implements ActionListener {
 
     public GamePanel(int WIDTH, int HEIGHT, int WALL_RADIUS, int WALL_THICKNESS, int money) {
-        Variables.WIDTH = WIDTH;
-        Variables.HEIGHT = HEIGHT;
-        Variables.WALL_RADIUS = WALL_RADIUS;
-        Variables.WALL_THICKNESS = WALL_THICKNESS;
-        SPAWN_X = WIDTH / 2;
-        SPAWN_Y = HEIGHT / 2;
+        Variables.width = WIDTH;
+        Variables.height = HEIGHT;
+        Variables.wallRadius = WALL_RADIUS;
+        Variables.wallThickness = WALL_THICKNESS;
+        spawnX = WIDTH / 2;
+        spawnY = HEIGHT / 2;
         camera = new Camera();
-        player = new Player(SPAWN_X, SPAWN_Y, 100, 300); // Set correct position with increased speed
+        player = new Player(spawnX, spawnY, 100, 300); // Set correct position with increased speed
         PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
@@ -91,8 +91,8 @@ public class GamePanel extends Variables implements ActionListener {
     public void addSlotMachine(int x, int y, Slots slotType) {
         int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
         int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
-        x = SPAWN_X + x - slotMachineWidth / 2;
-        y = SPAWN_Y - y - slotMachineHeight / 2;
+        x = spawnX + x - slotMachineWidth / 2;
+        y = spawnY - y - slotMachineHeight / 2;
         SlotMachine slotMachine = switch (slotType) {
             case SMALL -> new SmallSlotMachine(x, y);
             case BIG -> new BigSlotMachine(x, y);
