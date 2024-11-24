@@ -27,7 +27,7 @@ public class GamePanel extends Variables implements ActionListener {
         slotMachineAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
 
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(width, height));
         setFocusable(true);
 
         try {
