@@ -11,11 +11,11 @@ import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
 
-    public GamePanel(int WIDTH, int HEIGHT, int WALL_RADIUS, int WALL_THICKNESS, int money) {
-        Variables.width = WIDTH;
-        Variables.height = HEIGHT;
-        Variables.wallRadius = WALL_RADIUS;
-        Variables.wallThickness = WALL_THICKNESS;
+    public GamePanel(int width, int height, int wallRadius, int wallThickness, int money) {
+        Variables.width = width;
+        Variables.height = height;
+        Variables.wallRadius = wallRadius;
+        Variables.wallThickness = wallThickness;
         spawnX = WIDTH / 2;
         spawnY = HEIGHT / 2;
         camera = new Camera();
