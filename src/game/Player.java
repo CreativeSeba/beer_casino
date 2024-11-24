@@ -5,25 +5,17 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class Player {
+public class Player extends Variables {
     private int x, y, size;
     private int speed;
     private Image playerImage;
-    private static int wallThickness;
-    private static int wallRadius;
-    private static int spawnX;
-    private static int spawnY;
 
-    public Player(int x, int y, int size, int speed, int wallThickness, int wallRadius, int spawnX, int spawnY) {
+
+    public Player(int x, int y, int size, int speed) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speed = speed;
-        this.wallThickness = wallThickness;
-        this.wallRadius = wallRadius;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
-
         try {
             playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
         } catch (IOException e) {
@@ -57,36 +49,37 @@ public class Player {
 
     public void moveUp(double deltaTime) {
         y -= speed * deltaTime;
-        if(y<=spawnY-wallRadius+size/2) {
-            y = spawnY-wallRadius+size/2;
+        if(y<=SPAWN_Y-WALL_RADIUS+size/2) {
+            y = SPAWN_Y-WALL_RADIUS+size/2;
         }
     }
 
     public void moveDown(double deltaTime) {
         y += speed * deltaTime;
-        if(y>=spawnY+wallRadius-size/2) {
-            y = spawnY+wallRadius-size/2;
+        if(y>=SPAWN_Y+WALL_RADIUS-size/2) {
+            y = SPAWN_Y+WALL_RADIUS-size/2;
         }
     }
 
     public void moveLeft(double deltaTime) {
         x -= speed * deltaTime;
-        if(x<=spawnX-wallRadius+size/2) {
-            x = spawnX-wallRadius+size/2;
+        if(x<=SPAWN_X-WALL_RADIUS+size/2) {
+            x = SPAWN_X-WALL_RADIUS+size/2;
         }
     }
 
     public void moveRight(double deltaTime) {
         x += speed * deltaTime;
-        if(x>=spawnX+wallRadius-size/2) {
-            x = spawnX+wallRadius-size/2;
+        if(x>=SPAWN_X+WALL_RADIUS-size/2) {
+            x = SPAWN_X+WALL_RADIUS-size/2;
         }
     }
 
-    public void draw(Graphics g, int offsetX, int offsetY) {
+    @Override
+    protected void paintComponent(Graphics g) {
         int newSize = size; // Increase the size by a factor of 20
-        int drawX = x - offsetX - newSize / 2; // Center the image horizontally
-        int drawY = y - offsetY - newSize / 2; // Center the image vertically
+        int drawX = x - camera.getX() - newSize / 2; // Center the image horizontally
+        int drawY = y - camera.getY() - newSize / 2; // Center the image vertically
         if (playerImage != null) {
             g.drawImage(playerImage, drawX, drawY, newSize, newSize, null);
         } else {

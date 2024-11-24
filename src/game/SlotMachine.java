@@ -4,19 +4,19 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
-import javax.swing.*;
 import java.util.List;
 
 
-public abstract class SlotMachine extends GamePanel implements Money {
+public abstract class SlotMachine extends Variables {
     protected int[] numbers;
-    public static List<Pair<Integer, Integer>> combinations;
-    private Random random = new Random();
-    private String labelText;
-    private int numberOfSlots;
-    private PlayerMoney playerMoney = GamePanel.playerMoney;
-    Slots type;
+    protected int x, y;
+    protected static List<Pair<Integer, Integer>> combinations;
+    private final Random random = new Random();
+    protected Slots type;
+    private final String labelText;
+    private final int numberOfSlots;
 
     public SlotMachine(int numberOfSlots, Slots type, int loose) {
         this.numberOfSlots = numberOfSlots;
@@ -35,14 +35,13 @@ public abstract class SlotMachine extends GamePanel implements Money {
                 this.labelText = "Slot Machine";
         }
         setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
-
+        //addSlotMachine(x, y);
         // Handle mouse click to trigger the slot machine's spin
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (playerMoney.money > 0) {
+                if (PlayerMoney.money > 0) {
                     spin();
-                    removeMoney(playerMoney, loose);
 //                    combinations.clear();
 //                    combinations.add(0, new Pair<>(1, 3));
 //                    combinations.add(1, new Pair<>(2, 1));
@@ -52,7 +51,7 @@ public abstract class SlotMachine extends GamePanel implements Money {
                     for (Pair<Integer, Integer> pair : combinations) {
                         System.out.println(pair.first + " " + pair.second);
                     }
-                    setCombinations();
+                    placeBets(loose);
                     System.out.println("\n");
                     repaint();
                 } else {
@@ -88,24 +87,15 @@ public abstract class SlotMachine extends GamePanel implements Money {
         combinations.add(new Pair<>(numCount.first, numCount.second));
         repaint();
     }
-    abstract void setCombinations();
+    abstract void placeBets(int amount);
+
+    //public abstract void addSlotMachine(int x, int y) ;
 
     public void resetNumbers() {
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = 0;
-        }
+        Arrays.fill(numbers, 0);
         repaint();
     }
 
-    @Override
-    public void addMoney(PlayerMoney playerMoney, int amount) {
-        Money.super.addMoney(playerMoney, amount);
-    }
-
-    @Override
-    public void removeMoney(PlayerMoney playerMoney, int amount) {
-        Money.super.removeMoney(playerMoney, amount);
-    }
 
     @Override
     protected void paintComponent(Graphics g) {

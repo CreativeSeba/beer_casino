@@ -1,14 +1,13 @@
 package game;
 
-public interface Money {
-    default void addMoney(PlayerMoney playerMoney, int amount){
-        playerMoney.money += amount;
-    }
+import java.awt.event.KeyEvent;
 
-    default void removeMoney(PlayerMoney playerMoney, int amount){
-        playerMoney.money -= amount;
-        if(playerMoney.money<0){
-            playerMoney.money=0;
+public interface Money {
+    default void placeBets (int amount){
+        PlayerMoney.money -= amount;
+        if(PlayerMoney.money <0){
+            PlayerMoney.money =0;
         }
     }
+    //void interaction(KeyEvent key);
 }

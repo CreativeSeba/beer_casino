@@ -2,11 +2,10 @@ package game;
 
 import java.awt.*;
 
-public class Floor extends GamePanel{
+public class Floor extends Variables {
     public Floor() {
-        super();
-        repaint();
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -16,8 +15,8 @@ public class Floor extends GamePanel{
             int offsetX = (camera.getX() % bgWidth + bgWidth) % bgWidth;
             int offsetY = (camera.getY() % bgHeight + bgHeight) % bgHeight;
 
-            for (int x = -offsetX; x < getWidth(); x += bgWidth) {
-                for (int y = -offsetY; y < getHeight(); y += bgHeight) {
+            for (int x = -offsetX; x < WIDTH; x += bgWidth) {
+                for (int y = -offsetY; y < HEIGHT; y += bgHeight) {
                     g.drawImage(backgroundImage, x, y, this);
                 }
             }

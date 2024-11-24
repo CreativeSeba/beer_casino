@@ -1,26 +1,21 @@
 package game;
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
+import java.awt.event.KeyEvent;
 
-public class BigSlotMachine extends SlotMachine {
-    private static int x;
-    private static int y;
-    private int numberOfSlots;
-    private PlayerMoney playerMoney = GamePanel.playerMoney;
+public class BigSlotMachine extends SlotMachine implements Money {
+    private static final int numberOfSlots = 5, loose = 400;
 
-    public BigSlotMachine(int numberOfSlots, int x, int y) {
-        super(5, Slots.BIG, 400);
+    public BigSlotMachine(int x, int y) {
+        super(numberOfSlots, Slots.BIG, loose);
         this.x = x;
         this.y = y;
-        this.numberOfSlots = numberOfSlots;
         setBackground(Color.RED);
     }
 
     @Override
-    protected void setCombinations() {
+    public void placeBets(int amount) {
+        Money.super.placeBets(amount);
         boolean win = true;
         int i = -1;
         for (Pair<Integer, Integer> pair : combinations) {
@@ -28,13 +23,21 @@ public class BigSlotMachine extends SlotMachine {
             if (i != 0 && i % 2 == 0 &&  numbers[i-2] != pair.first) {
                 win = false;
             } else if (pair.second == numberOfSlots) {
-                addMoney(playerMoney, 10000);
-                System.out.println("Wygrana big");
+                PlayerMoney.money += 5000;
+                System.out.println("Wygrana small");
             }
         }
         if (win) {
-            addMoney(playerMoney, 5000);
+            PlayerMoney.money += 1000;
             System.out.println("Wygrana z cando");
         }
     }
+//    @Override
+//    public void interaction(KeyEvent key) {
+//
+//    }
+//    @Override
+//    public void addSlotMachine(int x, int y){
+//
+//    }
 }

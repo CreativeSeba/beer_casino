@@ -1,32 +1,21 @@
 package game;
 
-public class Camera {
-    private static int width, height;
+public class Camera extends Variables {
     private static int x, y;
 
-    private static int wallThickness;
-    private static int wallRadius;
-    private static int spawnX;
-    private static int spawnY;
+    public Camera() {
 
-    public Camera(int width, int height, int spawnX, int spawnY, int wallThickness, int wallRadius) {
-        this.width = width;
-        this.height = height;
-        this.spawnX = spawnX;
-        this.spawnY = spawnY;
-        this.wallThickness = wallThickness;
-        this.wallRadius = wallRadius;
     }
 
     public void update(Player player) {
-        x = player.getX() - width / 2;
-        y = player.getY() - height / 2;
+        x = player.getX() - WIDTH / 2;
+        y = player.getY() - HEIGHT / 2;
 
         // Clamp the camera position to the wall boundaries
-        int minX = spawnX - wallRadius - wallThickness;
-        int maxX = spawnX + wallRadius + wallThickness - width;
-        int minY = spawnY - wallRadius - wallThickness;
-        int maxY = spawnY + wallRadius + wallThickness - height;
+        int minX = SPAWN_X - WALL_RADIUS - WALL_THICKNESS;
+        int maxX = SPAWN_X + WALL_RADIUS + WALL_THICKNESS - WIDTH;
+        int minY = SPAWN_Y - WALL_RADIUS - WALL_THICKNESS;
+        int maxY = SPAWN_Y + WALL_RADIUS + WALL_THICKNESS - HEIGHT;
 
         if (x <= minX) {
             x = minX;

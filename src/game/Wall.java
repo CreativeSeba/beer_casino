@@ -1,13 +1,12 @@
 package game;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.JComponent;
 
-public class Wall extends GamePanel {
+public class Wall extends Variables {
     public Wall() {
-        super();
-        repaint();
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
