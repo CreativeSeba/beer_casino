@@ -86,7 +86,7 @@ public abstract class SlotMachine extends Variables {
         combinations.add(new Pair<>(numCount.first, numCount.second));
         repaint();
     }
-    abstract void placeBets(int amount);
+    protected abstract void placeBets(int amount);
 
     //public abstract void addSlotMachine(int x, int y) ;
 
