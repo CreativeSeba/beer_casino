@@ -3,7 +3,9 @@ package game;
 import java.awt.*;
 
 public class Floor extends Variables {
-    public Floor() {}
+    public Floor() {
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

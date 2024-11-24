@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-
 public class GamePanel extends Variables implements ActionListener {
 
     public GamePanel(int WIDTH, int HEIGHT, int WALL_RADIUS, int WALL_THICKNESS, int money) {
@@ -20,7 +19,7 @@ public class GamePanel extends Variables implements ActionListener {
         spawnX = WIDTH / 2;
         spawnY = HEIGHT / 2;
         camera = new Camera();
-        player = new Player(spawnX, spawnY, 100, 300); // Set correct position with increased speed
+        player = new Player(spawnX, spawnY, 100, 300);
         PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
@@ -45,7 +44,6 @@ public class GamePanel extends Variables implements ActionListener {
             public void keyPressed(KeyEvent key) {
                 pressedKeys.add(key.getKeyCode());
                 if (key.getKeyCode() == KeyEvent.VK_E) {
-                    // SMALL SLOT MACHINE
                     for (int i = 0; i < slotMachineAreas.size(); i++) {
                         Rectangle slotMachineArea = slotMachineAreas.get(i);
                         if (slotMachineArea.contains(player.getX(), player.getY())) {
@@ -53,18 +51,15 @@ public class GamePanel extends Variables implements ActionListener {
 
                             if (slotMachine != null) {
                                 if (isSlotMachineActive) {
-                                    // Deactivate the slot machine
                                     remove(slotMachine);
                                     slotMachine.resetNumbers();
                                     isSlotMachineActive = false;
                                     activeSlotMachine = null;
                                 } else {
-                                    // Activate the slot machine
                                     add(slotMachine);
                                     isSlotMachineActive = true;
                                     activeSlotMachine = slotMachine;
 
-                                    // Teleport the player to the center of the slot machine area
                                     player.setX(slotMachineArea.x + slotMachineArea.width / 2);
                                     player.setY(slotMachineArea.y + slotMachineArea.height / 2 + player.getHeight() / 4);
                                 }
@@ -83,11 +78,10 @@ public class GamePanel extends Variables implements ActionListener {
             }
         });
 
-        timer = new Timer(16, this); // roughly 60 FPS
+        timer = new Timer(16, this);
         timer.start();
     }
 
-    // In GamePanel.java
     public void addSlotMachine(int x, int y, Slots slotType) {
         int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
         int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
@@ -113,7 +107,7 @@ public class GamePanel extends Variables implements ActionListener {
 
         int i = 0;
         for (Rectangle area : slotMachineAreas) {
-            if(slotMachines.get(i).type == Slots.SMALL){
+            if (slotMachines.get(i).type == Slots.SMALL) {
                 if (smallSlotMachineImage != null) {
                     int imageWidth = (int) (area.width * 1.5);
                     int imageHeight = (int) (area.height * 1.5);
@@ -124,8 +118,7 @@ public class GamePanel extends Variables implements ActionListener {
                     g.setColor(Color.GREEN);
                     g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
                 }
-            }
-            else if(slotMachines.get(i).type == Slots.BIG){
+            } else if (slotMachines.get(i).type == Slots.BIG) {
                 if (bigSlotMachineImage != null) {
                     int imageWidth = (int) (area.width * 1.5);
                     int imageHeight = (int) (area.height * 1.5);
@@ -140,7 +133,6 @@ public class GamePanel extends Variables implements ActionListener {
             i++;
         }
 
-        // Draw the player's money in the top right corner
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         String moneyText = "Chips: " + PlayerMoney.money;
@@ -148,7 +140,7 @@ public class GamePanel extends Variables implements ActionListener {
         g.drawString(moneyText, getWidth() - textWidth - 10, 30);
 
         camera.update(player);
-        player.paintComponent(g); // Draw the player entity relative to the camera
+        player.paintComponent(g);
     }
 
     @Override
@@ -160,7 +152,7 @@ public class GamePanel extends Variables implements ActionListener {
     }
 
     private void updatePlayerPosition() {
-        double deltaTime = 0.016; // Assuming 60 FPS, so each frame is roughly 0.016 seconds
+        double deltaTime = 0.016;
         if (pressedKeys.contains(KeyEvent.VK_W)) {
             player.moveUp(deltaTime);
         }

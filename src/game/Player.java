@@ -49,29 +49,29 @@ public class Player extends Variables {
 
     public void moveUp(double deltaTime) {
         y -= speed * deltaTime;
-        if(y<= spawnY - wallRadius +size/2) {
-            y = spawnY - wallRadius +size/2;
+        if (y <= spawnY - wallRadius + size / 2) {
+            y = spawnY - wallRadius + size / 2;
         }
     }
 
     public void moveDown(double deltaTime) {
         y += speed * deltaTime;
-        if(y>= spawnY + wallRadius -size/2) {
-            y = spawnY + wallRadius -size/2;
+        if (y >= spawnY + wallRadius - size / 2) {
+            y = spawnY + wallRadius - size / 2;
         }
     }
 
     public void moveLeft(double deltaTime) {
         x -= speed * deltaTime;
-        if(x<= spawnX - wallRadius +size/2) {
-            x = spawnX - wallRadius +size/2;
+        if (x <= spawnX - wallRadius + size / 2) {
+            x = spawnX - wallRadius + size / 2;
         }
     }
 
     public void moveRight(double deltaTime) {
         x += speed * deltaTime;
-        if(x>= spawnX + wallRadius -size/2) {
-            x = spawnX + wallRadius -size/2;
+        if (x >= spawnX + wallRadius - size / 2) {
+            x = spawnX + wallRadius - size / 2;
         }
     }
 

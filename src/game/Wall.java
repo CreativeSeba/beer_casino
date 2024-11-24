@@ -3,7 +3,8 @@ package game;
 import java.awt.*;
 
 public class Wall extends Variables {
-    public Wall() {}
+    public Wall() {
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

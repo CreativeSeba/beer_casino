@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Set;
 
-public abstract class Variables extends JPanel{
+public abstract class Variables extends JPanel {
     protected static Timer timer;
     protected static Set<Integer> pressedKeys;
     protected static int wallThickness, wallRadius, spawnX, spawnY, height, width;

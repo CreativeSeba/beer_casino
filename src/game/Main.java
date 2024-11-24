@@ -17,10 +17,10 @@ public class Main extends JFrame {
         setLocationRelativeTo(null); // Center the window on the screen;
 
         //SMALL
-        gamePanel.addSlotMachine(-200,0, Slots.SMALL);
+        gamePanel.addSlotMachine(-200, 0, Slots.SMALL);
 
         //BIG
-        gamePanel.addSlotMachine(200,0, Slots.BIG);
+        gamePanel.addSlotMachine(200, 0, Slots.BIG);
 
     }
 

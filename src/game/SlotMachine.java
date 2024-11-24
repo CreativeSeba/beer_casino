@@ -34,9 +34,8 @@ public abstract class SlotMachine extends Variables {
             default:
                 this.labelText = "Slot Machine";
         }
-        setPreferredSize(new Dimension(200, 200));  // Set the size of the slot machine
+        setPreferredSize(new Dimension(200, 200));
         //addSlotMachine(x, y);
-        // Handle mouse click to trigger the slot machine's spin
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -68,7 +67,7 @@ public abstract class SlotMachine extends Variables {
             numbers[i] = 0;
         }
         for (int i = 0; i < numberOfSlots; i++) {
-            numbers[i] = random.nextInt(10); // Random numbers between 0-9
+            numbers[i] = random.nextInt(10);
             int curr = numbers[i];
             if (i == 0) {
                 numCount.first = curr;

@@ -3,7 +3,8 @@ package game;
 public class Camera extends Variables {
     private static int x, y;
 
-    public Camera() {}
+    public Camera() {
+    }
 
     public void update(Player player) {
         x = player.getX() - width / 2;
