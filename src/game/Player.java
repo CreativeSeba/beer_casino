@@ -8,8 +8,7 @@ import java.io.IOException;
 public class Player extends Variables {
     private int x, y, size;
     private int speed;
-    private Image playerImage;
-
+    private static Image playerImage;
 
     public Player(int x, int y, int size, int speed) {
         this.x = x;
@@ -46,45 +45,38 @@ public class Player extends Variables {
     public void setY(int y) {
         this.y = y;
     }
-
-    public void moveUp(double deltaTime) {
-        y -= speed * deltaTime;
-        if (y <= spawnY - wallRadius + size / 2) {
-            y = spawnY - wallRadius + size / 2;
+    public int getSpeed() {
+        return speed;
+    }
+    public void move(double dx, double dy) {
+        x += dx;
+        y += dy;
+        int minX = spawnX - wallRadius + size / 2;
+        int maxX = spawnX + wallRadius - size / 2;
+        int minY = spawnY - wallRadius + size / 2;
+        int maxY = spawnY + wallRadius - size / 2;
+        //LEFT
+        if (x <= minX) {
+            x = minX;
+        }
+        //RIGHT
+        if (x >= maxX) {
+            x = maxX;
+        }
+        //UP
+        if (y <= minY) {
+            y = minY;
+        }
+        //DOWN
+        if (y >= maxY) {
+            y = maxY;
         }
     }
-
-    public void moveDown(double deltaTime) {
-        y += speed * deltaTime;
-        if (y >= spawnY + wallRadius - size / 2) {
-            y = spawnY + wallRadius - size / 2;
-        }
-    }
-
-    public void moveLeft(double deltaTime) {
-        x -= speed * deltaTime;
-        if (x <= spawnX - wallRadius + size / 2) {
-            x = spawnX - wallRadius + size / 2;
-        }
-    }
-
-    public void moveRight(double deltaTime) {
-        x += speed * deltaTime;
-        if (x >= spawnX + wallRadius - size / 2) {
-            x = spawnX + wallRadius - size / 2;
-        }
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
-        int newSize = size; // Increase the size by a factor of 20
-        int drawX = x - camera.getX() - newSize / 2; // Center the image horizontally
-        int drawY = y - camera.getY() - newSize / 2; // Center the image vertically
-        if (playerImage != null) {
-            g.drawImage(playerImage, drawX, drawY, newSize, newSize, null);
-        } else {
-            g.setColor(Color.RED);
-            g.fillRect(drawX, drawY, newSize, newSize);
-        }
+        int newSize = size;
+        int drawX = x - camera.getX() - newSize / 2;
+        int drawY = y - camera.getY() - newSize / 2;
+        g.drawImage(playerImage, drawX, drawY, newSize, newSize, null);
     }
 }

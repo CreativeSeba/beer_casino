@@ -6,7 +6,7 @@ public class Camera extends Variables {
     public Camera() {
     }
 
-    public void update(Player player) {
+    public void update() {
         x = player.getX() - width / 2;
         y = player.getY() - height / 2;
 

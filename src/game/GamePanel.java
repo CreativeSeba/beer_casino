@@ -19,7 +19,7 @@ public class GamePanel extends Variables implements ActionListener {
         spawnX = WIDTH / 2;
         spawnY = HEIGHT / 2;
         camera = new Camera();
-        player = new Player(spawnX, spawnY, 100, 300);
+        player = new Player(spawnX, spawnY, 100, 400);
         PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
@@ -31,7 +31,6 @@ public class GamePanel extends Variables implements ActionListener {
         setFocusable(true);
 
         try {
-            backgroundImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));
             smallSlotMachineImage = ImageIO.read(new File("src/game/graphics/small-slot-machine.png"));
             bigSlotMachineImage = ImageIO.read(new File("src/game/graphics/big-slot-machine.png"));
         } catch (IOException e) {
@@ -139,7 +138,7 @@ public class GamePanel extends Variables implements ActionListener {
         int textWidth = g.getFontMetrics().stringWidth(moneyText);
         g.drawString(moneyText, getWidth() - textWidth - 10, 30);
 
-        camera.update(player);
+        camera.update();
         player.paintComponent(g);
     }
 
@@ -153,17 +152,34 @@ public class GamePanel extends Variables implements ActionListener {
 
     private void updatePlayerPosition() {
         double deltaTime = 0.016;
+        double speed = player.getSpeed(); // Assuming speed is in pixels per second
+        double dx = 0;
+        double dy = 0;
+
         if (pressedKeys.contains(KeyEvent.VK_W)) {
-            player.moveUp(deltaTime);
+            dy -= 1;
         }
         if (pressedKeys.contains(KeyEvent.VK_S)) {
-            player.moveDown(deltaTime);
+            dy += 1;
         }
         if (pressedKeys.contains(KeyEvent.VK_A)) {
-            player.moveLeft(deltaTime);
+            dx -= 1;
         }
         if (pressedKeys.contains(KeyEvent.VK_D)) {
-            player.moveRight(deltaTime);
+            dx += 1;
         }
+
+        // Normalize the movement vector
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if (length != 0) { // Prevent division by zero
+            dx = (dx / length) * speed * deltaTime;
+            dy = (dy / length) * speed * deltaTime;
+        }
+
+        player.move(dx, dy);
+
+        // Print the speed in pixels per second
+       /* double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
+        System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }
 }

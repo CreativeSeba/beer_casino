@@ -18,5 +18,5 @@ public abstract class Variables extends JPanel {
     protected static List<Rectangle> slotMachineAreas;
     protected static boolean isSlotMachineActive = false;
     protected static SlotMachine activeSlotMachine;
-    protected static BufferedImage backgroundImage, smallSlotMachineImage, bigSlotMachineImage;
+    protected static BufferedImage smallSlotMachineImage, bigSlotMachineImage;
 }
