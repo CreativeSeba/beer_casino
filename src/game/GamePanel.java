@@ -131,6 +131,16 @@ public class GamePanel extends Variables implements ActionListener {
                     g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
                 }
             }
+
+            // Check if the player is near the slot machine and not currently playing
+            if (!isSlotMachineActive && area.contains(player.getX(), player.getY())) {
+                g.setColor(Color.WHITE);
+                g.setFont(new Font("Arial", Font.BOLD, 20));
+                String message = "Press E to play";
+                int textWidth = g.getFontMetrics().stringWidth(message);
+                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - 10 - camera.getY());
+            }
+
             i++;
         }
 
