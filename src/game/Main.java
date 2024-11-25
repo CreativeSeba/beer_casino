@@ -11,7 +11,7 @@ public class Main extends JFrame {
         ImageIcon icon = new ImageIcon("src/game/graphics/icon.png");
         setIconImage(icon.getImage());
 
-        GamePanel gamePanel = new GamePanel(1000, 700, 750, 50, 10000);
+        GamePanel gamePanel = new GamePanel(1000, 700, 750, 50, 10000, 100, 400);
         add(gamePanel);
         pack(); // Automatically size the window based on its content
         setLocationRelativeTo(null); // Center the window on the screen;

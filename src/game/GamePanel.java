@@ -11,15 +11,17 @@ import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
 
-    public GamePanel(int width, int height, int wallRadius, int wallThickness, int money) {
+    public GamePanel(int width, int height, int wallRadius, int wallThickness, int money, int playerSize, int playerSpeed) {
         Variables.width = width;
         Variables.height = height;
         Variables.wallRadius = wallRadius;
         Variables.wallThickness = wallThickness;
+        Variables.playerSize = playerSize;
+        Variables.playerSpeed = playerSpeed;
         spawnX = WIDTH / 2;
         spawnY = HEIGHT / 2;
         camera = new Camera();
-        player = new Player(spawnX, spawnY, 100, 400);
+        player = new Player(spawnX, spawnY, playerSize, playerSpeed);
         PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
