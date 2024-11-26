@@ -138,7 +138,7 @@ public class GamePanel extends Variables implements ActionListener {
                 g.setFont(new Font("Arial", Font.BOLD, 20));
                 String message = "Press E to play";
                 int textWidth = g.getFontMetrics().stringWidth(message);
-                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - 10 - camera.getY());
+                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - area.height/4 - camera.getY());
             }
 
             i++;
@@ -191,7 +191,7 @@ public class GamePanel extends Variables implements ActionListener {
         player.move(dx, dy);
 
         // Print the speed in pixels per second
-       /* double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
+/*        double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
         System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }
 }
