@@ -3,6 +3,8 @@ package game;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -17,10 +19,16 @@ public abstract class SlotMachine extends Variables {
     protected Slots type;
     private final String labelText;
     private final int numberOfSlots;
+    protected BufferedImage image;
+    private int loose;
+    protected Color color;
 
-    public SlotMachine(int numberOfSlots, Slots type, int loose) {
+    public SlotMachine(int numberOfSlots, Slots type, int loose, BufferedImage image, Color color) {
         this.numberOfSlots = numberOfSlots;
         this.type = type;
+        this.loose = loose;
+        this.image = image;
+        this.color = color;
         numbers = new int[numberOfSlots];
         combinations = new ArrayList<>();
 
@@ -41,11 +49,6 @@ public abstract class SlotMachine extends Variables {
             public void mouseClicked(MouseEvent e) {
                 if (PlayerMoney.money > 0) {
                     spin();
-//                    combinations.clear();
-//                    combinations.add(0, new Pair<>(1, 3));
-//                    combinations.add(1, new Pair<>(2, 1));
-//                    combinations.add(2, new Pair<>(4, 1));
-//                    numbers = new int[]{1, 1, 1, 2, 1};
 
                     for (Pair<Integer, Integer> pair : combinations) {
                         System.out.println(pair.first + " " + pair.second);
@@ -86,6 +89,7 @@ public abstract class SlotMachine extends Variables {
         combinations.add(new Pair<>(numCount.first, numCount.second));
         repaint();
     }
+
     protected abstract void placeBets(int amount);
 
     //public abstract void addSlotMachine(int x, int y) ;
@@ -95,11 +99,9 @@ public abstract class SlotMachine extends Variables {
         repaint();
     }
 
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         // Draw the label text above the slot machine
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 16));

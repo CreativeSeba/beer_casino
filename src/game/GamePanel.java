@@ -25,6 +25,7 @@ public class GamePanel extends Variables implements ActionListener {
         PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
+        bar = new Bar();
         slotMachines = new ArrayList<>();
         slotMachineAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
@@ -32,15 +33,9 @@ public class GamePanel extends Variables implements ActionListener {
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
 
-        try {
-            smallSlotMachineImage = ImageIO.read(new File("src/game/graphics/small-slot-machine.png"));
-            bigSlotMachineImage = ImageIO.read(new File("src/game/graphics/big-slot-machine.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         addKeyListener(new KeyAdapter() {
+            // src/game/GamePanel.java
             @Override
             public void keyPressed(KeyEvent key) {
                 pressedKeys.add(key.getKeyCode());
@@ -57,6 +52,7 @@ public class GamePanel extends Variables implements ActionListener {
                                     isSlotMachineActive = false;
                                     activeSlotMachine = null;
                                 } else {
+                                    slotMachine.setBounds(slotMachineArea);
                                     add(slotMachine);
                                     isSlotMachineActive = true;
                                     activeSlotMachine = slotMachine;
@@ -105,45 +101,29 @@ public class GamePanel extends Variables implements ActionListener {
         super.paintComponent(g);
         floor.paintComponent(g);
         wall.paintComponent(g);
-
+        bar.paintComponent(g);
         int i = 0;
         for (Rectangle area : slotMachineAreas) {
-            if (slotMachines.get(i).type == Slots.SMALL) {
-                if (smallSlotMachineImage != null) {
-                    int imageWidth = (int) (area.width * 1.5);
-                    int imageHeight = (int) (area.height * 1.5);
-                    int centerX = area.x + area.width / 2 - camera.getX();
-                    int centerY = area.y + area.height / 2 - camera.getY();
-                    g.drawImage(smallSlotMachineImage, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
-                } else {
-                    g.setColor(Color.GREEN);
-                    g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
-                }
-            } else if (slotMachines.get(i).type == Slots.BIG) {
-                if (bigSlotMachineImage != null) {
-                    int imageWidth = (int) (area.width * 1.5);
-                    int imageHeight = (int) (area.height * 1.5);
-                    int centerX = area.x + area.width / 2 - camera.getX();
-                    int centerY = area.y + area.height / 2 - camera.getY();
-                    g.drawImage(bigSlotMachineImage, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
-                } else {
-                    g.setColor(Color.RED);
-                    g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
-                }
+            if (slotMachines.get(i).image != null) {
+                int imageWidth = (int) (area.width * 1.5);
+                int imageHeight = (int) (area.height * 1.5);
+                int centerX = area.x + area.width / 2 - camera.getX();
+                int centerY = area.y + area.height / 2 - camera.getY();
+                g.drawImage(slotMachines.get(i).image, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
+            } else {
+                g.setColor(slotMachines.get(i).color);
+                g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
             }
-
             // Check if the player is near the slot machine and not currently playing
             if (!isSlotMachineActive && area.contains(player.getX(), player.getY())) {
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Arial", Font.BOLD, 20));
                 String message = "Press E to play";
                 int textWidth = g.getFontMetrics().stringWidth(message);
-                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - area.height/4 - camera.getY());
+                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - area.height / 4 - camera.getY());
             }
-
             i++;
         }
-
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         String moneyText = "Chips: " + PlayerMoney.money;
@@ -191,7 +171,7 @@ public class GamePanel extends Variables implements ActionListener {
         player.move(dx, dy);
 
         // Print the speed in pixels per second
-/*        double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
+     /*   double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
         System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }
 }

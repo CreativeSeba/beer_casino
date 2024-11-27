@@ -1,12 +1,26 @@
 package game;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class BigSlotMachine extends SlotMachine implements Money {
-    private static final int numberOfSlots = 5, loose = 400;
+    private static final int numberOfSlots = 5, loose = 1000;
+    private static Color color = Color.RED;
+    private static BufferedImage bigSlotMachineImage;
+
+    static {
+        try {
+            bigSlotMachineImage = ImageIO.read(new File("src/game/graphics/big-slot-machine.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public BigSlotMachine(int x, int y) {
-        super(numberOfSlots, Slots.BIG, loose);
+        super(numberOfSlots, Slots.BIG, loose, bigSlotMachineImage, color);
         this.x = x;
         this.y = y;
         setBackground(Color.RED);
@@ -16,20 +30,33 @@ public class BigSlotMachine extends SlotMachine implements Money {
     public void placeBets(int amount) {
         Money.super.placeBets(amount);
         boolean win = true;
-        int i = -1;
+        final int moneyBefore = PlayerMoney.money;
         for (Pair<Integer, Integer> pair : combinations) {
-            i += pair.second;
-            if (i != 0 && i % 2 == 0 && numbers[i - 2] != pair.first) {
-                win = false;
-            } else if (pair.second == numberOfSlots) {
-                PlayerMoney.money += 5000;
-                System.out.println("Wygrana small");
+            if(pair.second==numberOfSlots) {
+                if(pair.first==7){
+                    PlayerMoney.money=1000000;
+                }
+                else {
+                    PlayerMoney.money += 100000;
+                }
+            }
+            else if(pair.second==2){
+                PlayerMoney.money += amount;
+            }
+            else if(pair.second > 2){
+                PlayerMoney.money += pair.second*amount;
+            }
+        }
+        int first = numbers[0];
+        for (int i = 1; i <= numberOfSlots; i++) {
+            if(i%2==0 && numbers[i]!=first){
+                win=false;
             }
         }
         if (win) {
-            PlayerMoney.money += 1000;
-            System.out.println("Wygrana z cando");
+            PlayerMoney.money += 50000;
         }
+        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
 //    @Override
 //    public void interaction(KeyEvent key) {
