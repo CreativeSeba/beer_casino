@@ -23,6 +23,7 @@ public abstract class SlotMachine extends Variables {
     private final static int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color) {
+        System.out.println(spawnX + " " + spawnY);
         this.numberOfSlots = numberOfSlots;
         this.type = type;
         this.image = image;
@@ -61,7 +62,7 @@ public abstract class SlotMachine extends Variables {
             }
         });
         slotMachines.add(this);
-        slotMachineAreas.add(new Rectangle(x, y, slotMachineWidth, slotMachineHeight));
+        slotMachineAreas.add(new Rectangle(this.x, this.y, slotMachineWidth, slotMachineHeight));
 
         revalidate();
         repaint();

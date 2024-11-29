@@ -17,7 +17,7 @@ public class Main extends JFrame {
         setLocationRelativeTo(null); // Center the window on the screen;
 
         //SMALL
-        SlotMachine smallSlotMachine = new SmallSlotMachine(500, 350);
+        SlotMachine smallSlotMachine = new SmallSlotMachine(-200, 0);
 
         //BIG
         SlotMachine bigSlotMachine = new BigSlotMachine(200, 0);
