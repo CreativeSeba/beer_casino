@@ -18,17 +18,17 @@ public class GamePanel extends Variables implements ActionListener {
         Variables.wallThickness = wallThickness;
         Variables.playerSize = playerSize;
         Variables.playerSpeed = playerSpeed;
-        spawnX = WIDTH / 2;
-        spawnY = HEIGHT / 2;
+        spawnX = width / 2;
+        spawnY = height / 2;
         camera = new Camera();
         player = new Player(spawnX, spawnY, playerSize, playerSpeed);
-        PlayerMoney.money = money;
         floor = new Floor();
         wall = new Wall();
         bar = new Bar();
         slotMachines = new ArrayList<>();
         slotMachineAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
+        PlayerMoney.money = money;
 
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
@@ -77,23 +77,6 @@ public class GamePanel extends Variables implements ActionListener {
 
         timer = new Timer(16, this);
         timer.start();
-    }
-
-    public void addSlotMachine(int x, int y, Slots slotType) {
-        int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
-        int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
-        x = spawnX + x - slotMachineWidth / 2;
-        y = spawnY - y - slotMachineHeight / 2;
-        SlotMachine slotMachine = switch (slotType) {
-            case SMALL -> new SmallSlotMachine(x, y);
-            case BIG -> new BigSlotMachine(x, y);
-            default -> null;
-        };
-        slotMachines.add(slotMachine);
-        slotMachineAreas.add(new Rectangle(x, y, slotMachineWidth, slotMachineHeight));
-
-        revalidate();
-        repaint();
     }
 
     @Override

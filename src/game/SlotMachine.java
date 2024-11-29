@@ -4,12 +4,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
-
 
 public abstract class SlotMachine extends Variables {
     protected int[] numbers;
@@ -20,15 +18,17 @@ public abstract class SlotMachine extends Variables {
     private final String labelText;
     private final int numberOfSlots;
     protected BufferedImage image;
-    private int loose;
     protected Color color;
+    private final static int slotMachineWidth = player.getWidth() + player.getWidth() / 4;
+    private final static int slotMachineHeight = player.getHeight() + player.getHeight() / 4;
 
-    public SlotMachine(int numberOfSlots, Slots type, int loose, BufferedImage image, Color color) {
+    public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color) {
         this.numberOfSlots = numberOfSlots;
         this.type = type;
-        this.loose = loose;
         this.image = image;
         this.color = color;
+        this.x = spawnX + x - slotMachineWidth / 2;
+        this.y = spawnY - y - slotMachineHeight / 2;
         numbers = new int[numberOfSlots];
         combinations = new ArrayList<>();
 
@@ -43,7 +43,6 @@ public abstract class SlotMachine extends Variables {
                 this.labelText = "Slot Machine";
         }
         setPreferredSize(new Dimension(200, 200));
-        //addSlotMachine(x, y);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -61,6 +60,11 @@ public abstract class SlotMachine extends Variables {
                 }
             }
         });
+        slotMachines.add(this);
+        slotMachineAreas.add(new Rectangle(x, y, slotMachineWidth, slotMachineHeight));
+
+        revalidate();
+        repaint();
     }
 
     private void spin() {
@@ -91,8 +95,6 @@ public abstract class SlotMachine extends Variables {
     }
 
     protected abstract void placeBets(int amount);
-
-    //public abstract void addSlotMachine(int x, int y) ;
 
     public void resetNumbers() {
         Arrays.fill(numbers, 0);

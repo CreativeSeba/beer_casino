@@ -20,9 +20,7 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     }
 
     public SmallSlotMachine(int x, int y) {
-        super(numberOfSlots, Slots.SMALL, loose, smallSlotMachineImage, color);
-        this.x = x;
-        this.y = y;
+        super(x, y, numberOfSlots, Slots.SMALL, loose, smallSlotMachineImage, color);
         setBackground(Color.GREEN);
     }
 
