@@ -8,16 +8,16 @@ import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
     private static GamePanel instance;
-    public GamePanel(int width, int height, int wallRadius, int wallThickness, int money, int playerSize, int playerSpeed) {
+    public GamePanel(int sWidth, int sHeight, int wallRadius, int wallThickness, int money, int playerSize, int playerSpeed) {
         instance = this;
-        Variables.sWidth = width;
-        Variables.sHeight = height;
+        Variables.sWidth = sWidth;
+        Variables.sHeight = sHeight;
         Variables.wallRadius = wallRadius;
         Variables.wallThickness = wallThickness;
         Variables.playerSize = playerSize;
         Variables.playerSpeed = playerSpeed;
-        spawnX = width / 2;
-        spawnY = height / 2;
+        spawnX = sWidth / 2;
+        spawnY = sHeight / 2;
         camera = new Camera();
         player = new Player(spawnX, spawnY, playerSize, playerSpeed);
         floor = new Floor();
@@ -32,7 +32,7 @@ public class GamePanel extends Variables implements ActionListener {
         //BIG
         new BigSlotMachine(200, 0);
 
-        setPreferredSize(new Dimension(width, height));
+        setPreferredSize(new Dimension(sWidth, sHeight));
         setFocusable(true);
 
         addKeyListener(new KeyAdapter() {

@@ -2,7 +2,6 @@ package game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class BigSlotMachine extends SlotMachine implements Money {
 
     public BigSlotMachine(int x, int y) {
         super(x, y, numberOfSlots, type, loose, bigSlotMachineImage, color, labelText);
-        setBackground(Color.RED);
+        setBackground(color);
     }
 
     @Override

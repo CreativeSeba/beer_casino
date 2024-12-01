@@ -1,8 +1,6 @@
 package game;
 
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -23,6 +21,7 @@ public abstract class SlotMachine extends Variables{
     protected Color color;
     protected int loose;
     private final static int width = 200, height = 200;
+    private final static int wWidth = 200, wHeight = 200;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
         this.numberOfSlots = numberOfSlots;
@@ -31,8 +30,8 @@ public abstract class SlotMachine extends Variables{
         this.color = color;
         this.loose = loose;
         this.labelText = labelText;
-        this.x = spawnX + x - playerSize;
-        this.y = spawnY - y - playerSize;
+        this.x = spawnX + x - width/2;
+        this.y = spawnY - y - height/2;
 
         slotMachines.add(this);
         slotMachineAreas.add(new Rectangle(this.x, this.y, width, height));
@@ -125,21 +124,21 @@ public abstract class SlotMachine extends Variables{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setSize(width, height);
-        setLocation(spawnX-width/2, 0);
+        setSize(wWidth, wHeight);
+        setLocation(spawnX-wWidth/2, 0);
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         FontMetrics fm = g.getFontMetrics();
-        int labelX = (width - fm.stringWidth(labelText)) / 2;
+        int labelX = (wWidth - fm.stringWidth(labelText)) / 2;
         int labelY = fm.getHeight();
         g.drawString(labelText, labelX, labelY);
 
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         fm = g.getFontMetrics();
-        int xPos = (width - (fm.stringWidth("0") * numbers.length + 20 * (numbers.length - 1))) / 2;
-        int yPos = (height - fm.getHeight()) / 2 + fm.getAscent();
+        int xPos = (wWidth - (fm.stringWidth("0") * numbers.length + 20 * (numbers.length - 1))) / 2;
+        int yPos = (wHeight - fm.getHeight()) / 2 + fm.getAscent();
 
         for (int i = 0; i < numbers.length; i++) {
             g.drawString(String.valueOf(numbers[i]), xPos + i * (fm.stringWidth("0") + 20), yPos);

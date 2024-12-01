@@ -15,7 +15,6 @@ public class Main extends JFrame {
         add(gamePanel);
         pack();
         setLocationRelativeTo(null);
-
     }
 
     public static void main(String[] args) {
