@@ -54,12 +54,4 @@ public class SmallSlotMachine extends SlotMachine implements Money {
         }
         System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
-    //    @Override
-//    public void interaction(KeyEvent key) {
-//
-//    }
-//    @Override
-//    public void addSlotMachine(int x, int y){
-//
-//    }
 }
