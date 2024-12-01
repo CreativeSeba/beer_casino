@@ -2,14 +2,17 @@ package game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class BigSlotMachine extends SlotMachine implements Money {
     private static final int numberOfSlots = 5, loose = 1000;
-    private static Color color = Color.RED;
-    private static BufferedImage bigSlotMachineImage;
+    private static final Color color = Color.RED;
+    private static final Slots type = Slots.BIG;
+    private static final String labelText = "Big Slot Machine";
+    private static final BufferedImage bigSlotMachineImage;
 
     static {
         try {
@@ -20,7 +23,7 @@ public class BigSlotMachine extends SlotMachine implements Money {
     }
 
     public BigSlotMachine(int x, int y) {
-        super(x, y, numberOfSlots, Slots.BIG, loose, bigSlotMachineImage, color);
+        super(x, y, numberOfSlots, type, loose, bigSlotMachineImage, color, labelText);
         setBackground(Color.RED);
     }
 
@@ -47,8 +50,9 @@ public class BigSlotMachine extends SlotMachine implements Money {
         }
         int first = numbers[0];
         for (int i = 1; i <= numberOfSlots; i++) {
-            if(i%2==0 && numbers[i]!=first){
-                win=false;
+            if (i % 2 == 0 && numbers[i] != first) {
+                win = false;
+                break;
             }
         }
         if (win) {

@@ -2,12 +2,15 @@ package game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
 public class Player extends Variables {
-    private int x, y, size;
-    private int speed;
+    private int x;
+    private int y;
+    private final int size;
+    private final int speed;
     private static Image playerImage;
 
     public Player(int x, int y, int size, int speed) {
@@ -18,7 +21,7 @@ public class Player extends Variables {
         try {
             playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -45,12 +48,14 @@ public class Player extends Variables {
     public void setY(int y) {
         this.y = y;
     }
+
     public int getSpeed() {
         return speed;
     }
-    public void move(double dx, double dy) {
-        x += dx;
-        y += dy;
+
+    private void move(double dx, double dy) {
+        x += (int) dx;
+        y += (int) dy;
         int minX = spawnX - wallRadius + size / 2;
         int maxX = spawnX + wallRadius - size / 2;
         int minY = spawnY - wallRadius + size / 2;
@@ -72,11 +77,40 @@ public class Player extends Variables {
             y = maxY;
         }
     }
+    protected void updatePlayerPosition() {
+        double deltaTime = 0.016;
+        double speed = player.getSpeed();
+        double dx = 0;
+        double dy = 0;
+
+        if (pressedKeys.contains(KeyEvent.VK_W)) {
+            dy -= 1;
+        }
+        if (pressedKeys.contains(KeyEvent.VK_S)) {
+            dy += 1;
+        }
+        if (pressedKeys.contains(KeyEvent.VK_A)) {
+            dx -= 1;
+        }
+        if (pressedKeys.contains(KeyEvent.VK_D)) {
+            dx += 1;
+        }
+
+        double length = Math.sqrt(dx * dx + dy * dy);
+        if (length != 0) {
+            dx = (dx / length) * speed * deltaTime;
+            dy = (dy / length) * speed * deltaTime;
+        }
+
+        player.move(dx, dy);
+
+     /*   double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
+        System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
+    }
     @Override
     protected void paintComponent(Graphics g) {
-        int newSize = size;
-        int drawX = x - camera.getX() - newSize / 2;
-        int drawY = y - camera.getY() - newSize / 2;
-        g.drawImage(playerImage, drawX, drawY, newSize, newSize, null);
+        int drawX = x - camera.getX() - size / 2;
+        int drawY = y - camera.getY() - size / 2;
+        g.drawImage(playerImage, drawX, drawY, size, size, null);
     }
 }

@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
-
+    private static GamePanel instance;
     public GamePanel(int width, int height, int wallRadius, int wallThickness, int money, int playerSize, int playerSpeed) {
-        Variables.width = width;
-        Variables.height = height;
+        instance = this;
+        Variables.sWidth = width;
+        Variables.sHeight = height;
         Variables.wallRadius = wallRadius;
         Variables.wallThickness = wallThickness;
         Variables.playerSize = playerSize;
@@ -26,13 +27,15 @@ public class GamePanel extends Variables implements ActionListener {
         slotMachineAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
         PlayerMoney.money = money;
+        //SMALL
+        new SmallSlotMachine(-200, 0);
+        //BIG
+        new BigSlotMachine(200, 0);
 
         setPreferredSize(new Dimension(width, height));
         setFocusable(true);
 
-
         addKeyListener(new KeyAdapter() {
-            // src/game/GamePanel.java
             @Override
             public void keyPressed(KeyEvent key) {
                 pressedKeys.add(key.getKeyCode());
@@ -41,24 +44,8 @@ public class GamePanel extends Variables implements ActionListener {
                         Rectangle slotMachineArea = slotMachineAreas.get(i);
                         if (slotMachineArea.contains(player.getX(), player.getY())) {
                             SlotMachine slotMachine = slotMachines.get(i);
-
                             if (slotMachine != null) {
-                                if (isSlotMachineActive) {
-                                    remove(slotMachine);
-                                    slotMachine.resetNumbers();
-                                    isSlotMachineActive = false;
-                                    activeSlotMachine = null;
-                                } else {
-                                    slotMachine.setBounds(slotMachineArea);
-                                    add(slotMachine);
-                                    isSlotMachineActive = true;
-                                    activeSlotMachine = slotMachine;
-
-                                    player.setX(slotMachineArea.x + slotMachineArea.width / 2);
-                                    player.setY(slotMachineArea.y + slotMachineArea.height / 2 + player.getHeight() / 4);
-                                }
-                                revalidate();
-                                repaint();
+                                slotMachine.interact(player);
                                 break;
                             }
                         }
@@ -71,38 +58,20 @@ public class GamePanel extends Variables implements ActionListener {
                 pressedKeys.remove(key.getKeyCode());
             }
         });
-
         timer = new Timer(16, this);
         timer.start();
     }
-
+    public static GamePanel getInstance() {
+        return instance;
+    }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         floor.paintComponent(g);
         wall.paintComponent(g);
         bar.paintComponent(g);
-        int i = 0;
-        for (Rectangle area : slotMachineAreas) {
-            if (slotMachines.get(i).image != null) {
-                int imageWidth = (int) (area.width * 1.5);
-                int imageHeight = (int) (area.height * 1.5);
-                int centerX = area.x + area.width / 2 - camera.getX();
-                int centerY = area.y + area.height / 2 - camera.getY();
-                g.drawImage(slotMachines.get(i).image, centerX - imageWidth / 2, centerY - imageHeight / 2, imageWidth, imageHeight, this);
-            } else {
-                g.setColor(slotMachines.get(i).color);
-                g.fillRect(area.x - camera.getX(), area.y - camera.getY(), area.width, area.height);
-            }
-            // Check if the player is near the slot machine and not currently playing
-            if (!isSlotMachineActive && area.contains(player.getX(), player.getY())) {
-                g.setColor(Color.WHITE);
-                g.setFont(new Font("Arial", Font.BOLD, 20));
-                String message = "Press E to play";
-                int textWidth = g.getFontMetrics().stringWidth(message);
-                g.drawString(message, area.x + area.width / 2 - textWidth / 2 - camera.getX(), area.y - area.height / 4 - camera.getY());
-            }
-            i++;
+        for (SlotMachine slotMachine : slotMachines) {
+            slotMachine.draw(g);
         }
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
@@ -117,41 +86,8 @@ public class GamePanel extends Variables implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!isSlotMachineActive) {
-            updatePlayerPosition();
+            player.updatePlayerPosition();
         }
         repaint();
-    }
-
-    private void updatePlayerPosition() {
-        double deltaTime = 0.016;
-        double speed = player.getSpeed(); // Assuming speed is in pixels per second
-        double dx = 0;
-        double dy = 0;
-
-        if (pressedKeys.contains(KeyEvent.VK_W)) {
-            dy -= 1;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_S)) {
-            dy += 1;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_A)) {
-            dx -= 1;
-        }
-        if (pressedKeys.contains(KeyEvent.VK_D)) {
-            dx += 1;
-        }
-
-        // Normalize the movement vector
-        double length = Math.sqrt(dx * dx + dy * dy);
-        if (length != 0) { // Prevent division by zero
-            dx = (dx / length) * speed * deltaTime;
-            dy = (dy / length) * speed * deltaTime;
-        }
-
-        player.move(dx, dy);
-
-        // Print the speed in pixels per second
-     /*   double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
-        System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }
 }

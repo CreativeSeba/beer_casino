@@ -7,14 +7,13 @@ public class Camera extends Variables {
     }
 
     public void update() {
-        x = player.getX() - width / 2;
-        y = player.getY() - height / 2;
+        x = player.getX() - spawnX;
+        y = player.getY() - spawnY;
 
-        // Clamp the camera position to the wall boundaries
         int minX = spawnX - wallRadius - wallThickness;
-        int maxX = spawnX + wallRadius + wallThickness - width;
+        int maxX = spawnX + wallRadius + wallThickness - sWidth;
         int minY = spawnY - wallRadius - wallThickness;
-        int maxY = spawnY + wallRadius + wallThickness - height;
+        int maxY = spawnY + wallRadius + wallThickness - sHeight;
 
         if (x <= minX) {
             x = minX;

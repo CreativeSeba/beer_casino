@@ -4,15 +4,18 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 public class Floor extends Variables {
-    private static BufferedImage floorImage;
-    public Floor() {
+    private static final BufferedImage floorImage;
+    static {
         try {
             floorImage = ImageIO.read(new File("src/game/graphics/floor.jpg"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+    }
+    public Floor() {
     }
 
     @Override
@@ -24,8 +27,8 @@ public class Floor extends Variables {
             int offsetX = (camera.getX() % bgWidth + bgWidth) % bgWidth;
             int offsetY = (camera.getY() % bgHeight + bgHeight) % bgHeight;
 
-            for (int x = -offsetX; x < width; x += bgWidth) {
-                for (int y = -offsetY; y < height; y += bgHeight) {
+            for (int x = -offsetX; x < sWidth; x += bgWidth) {
+                for (int y = -offsetY; y < sHeight; y += bgHeight) {
                     g.drawImage(floorImage, x, y, null);
                 }
             }
