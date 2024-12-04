@@ -45,7 +45,10 @@ public abstract class SlotMachine extends Variables{
         spinButton.setFocusable(false);
 
         spinButton.addActionListener(e -> {
-            if (PlayerMoney.money > 0) {
+            if(PlayerMoney.money < loose) {
+                placeBets(loose);
+            }
+            else if (PlayerMoney.money > 0) {
                 spin();
                 for (Pair<Integer, Integer> pair : combinations) {
                     System.out.println(pair.first + " " + pair.second);

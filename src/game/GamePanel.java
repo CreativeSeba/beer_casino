@@ -64,11 +64,12 @@ public class GamePanel extends Variables implements ActionListener {
     public static GamePanel getInstance() {
         return instance;
     }
-    private String resultMessage = "";
-    private long messageEndTime = 0;
+    private String resultMessage;
+    private long messageEndTime;
+    private Color messageColor;
 
-    private String paidMessage = "";
-    private long paidMessageEndTime = 0;
+    private String paidMessage;
+    private long paidMessageEndTime;
 
     // Update the paintComponent method in the GamePanel class
     @Override
@@ -93,7 +94,7 @@ public class GamePanel extends Variables implements ActionListener {
             g.setFont(new Font("Arial", Font.BOLD, 16));
             int messageWidth = g.getFontMetrics().stringWidth(resultMessage);
             int messageX = getWidth() - messageWidth - 10;
-            g.setColor(resultMessage.startsWith("-") ? Color.RED : Color.GREEN);
+            g.setColor(messageColor);
             g.drawString(resultMessage, messageX, messageY);
             messageY += 20; // Move the Y position down for the next message
         }
@@ -113,6 +114,7 @@ public class GamePanel extends Variables implements ActionListener {
     public void setResultMessage(String message, Color color) {
         this.resultMessage = message;
         this.messageEndTime = System.currentTimeMillis() + 1000; // Display for 2 seconds
+        this.messageColor = color;
         repaint();
     }
     public void setPaidMessage(String message) {

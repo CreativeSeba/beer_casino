@@ -28,6 +28,10 @@ public class SmallSlotMachine extends SlotMachine implements Money {
 
     @Override
     public void placeBets(int amount) {
+        if (PlayerMoney.money < amount) {
+            GamePanel.getInstance().setResultMessage("Not enough money", Color.RED);
+            return;
+        }
         Money.super.placeBets(amount);
         boolean win = true;
         final int moneyBefore = PlayerMoney.money;
@@ -39,7 +43,7 @@ public class SmallSlotMachine extends SlotMachine implements Money {
                     PlayerMoney.money += 5000;
                 }
             } else if (pair.second > 1) {
-                PlayerMoney.money += pair.second * amount;
+                PlayerMoney.money += pair.second * amount / 2;
             }
         }
         int first = numbers[0];
