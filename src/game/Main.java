@@ -11,7 +11,7 @@ public class Main extends JFrame {
         ImageIcon icon = new ImageIcon("src/game/graphics/icon.png");
         setIconImage(icon.getImage());
 
-        GamePanel gamePanel = new GamePanel(1000, 700, 750, 50, 100, 100, 400);
+        GamePanel gamePanel = new GamePanel(1000, 700, 750, 50, 10000, 100, 400);
         add(gamePanel);  // Here, add() is called on the JFrame (not GamePanel itself)
         pack();
         setLocationRelativeTo(null);
