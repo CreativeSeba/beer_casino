@@ -1,5 +1,6 @@
 package game;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,6 +23,7 @@ public abstract class SlotMachine extends Variables{
     protected int loose;
     private final static int width = 200, height = 200;
     private final static int wWidth = 200, wHeight = 200;
+    private JButton spinButton;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
         this.numberOfSlots = numberOfSlots;
@@ -39,22 +41,23 @@ public abstract class SlotMachine extends Variables{
         numbers = new int[numberOfSlots];
         combinations = new ArrayList<>();
 
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (PlayerMoney.money > 0) {
-                    spin();
-                    for (Pair<Integer, Integer> pair : combinations) {
-                        System.out.println(pair.first + " " + pair.second);
-                    }
-                    placeBets(loose);
-                    System.out.println("\n");
-                    repaint();
-                } else {
-                    System.out.println("Przegrales ");
+        spinButton = new JButton("Spin");
+        spinButton.setFocusable(false);
+
+        spinButton.addActionListener(e -> {
+            if (PlayerMoney.money > 0) {
+                spin();
+                for (Pair<Integer, Integer> pair : combinations) {
+                    System.out.println(pair.first + " " + pair.second);
                 }
+                placeBets(loose);
+                System.out.println("\n");
+                repaint();
+            } else {
+                System.out.println("Przegrales");
             }
         });
+        this.add(spinButton);
     }
     protected abstract void placeBets(int amount);
     public void interact(Player player) {
@@ -113,20 +116,36 @@ public abstract class SlotMachine extends Variables{
             g.setColor(color);
             g.fillRect(x - camera.getX(), y - camera.getY(), width, height);
         }
-        if (!isSlotMachineActive && player.getX()>=x && player.getX()<=x+width && player.getY()>=y && player.getY()<=y+height) {
+        boolean isPlayerInArea = player.getX() >= x && player.getX() <= x + width && player.getY() >= y && player.getY() <= y + height;
+        if (!isSlotMachineActive && isPlayerInArea) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             String message = "Press E to play";
             int textWidth = g.getFontMetrics().stringWidth(message);
-            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y - height / 8 - camera.getY());
+            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + wHeight - height - camera.getY());
+        }
+        else if(isSlotMachineActive && isPlayerInArea){
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            String message = "Press E to leave";
+            int textWidth = g.getFontMetrics().stringWidth(message);
+            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + wHeight - height - camera.getY());
         }
     }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        setSize(wWidth, wHeight);
-        setLocation(spawnX-wWidth/2, 0);
+        setSize(wWidth * 2, wHeight);
+        setLocation(spawnX - wWidth / 2, 0);
+        // Draw the spin button
+        int buttonWidth = 100;
+        int buttonHeight = 30;
+        int buttonX = (wWidth - buttonWidth) / 2;
+        int buttonY = (wHeight - buttonHeight) / 2 + (int) (wHeight * 0.25);
 
+        spinButton.setBounds(buttonX, buttonY, buttonWidth, buttonHeight);
+
+        // Draw the label text
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         FontMetrics fm = g.getFontMetrics();
@@ -134,6 +153,47 @@ public abstract class SlotMachine extends Variables{
         int labelY = fm.getHeight();
         g.drawString(labelText, labelX, labelY);
 
+        // Draw the combinations label
+        g.drawString("Combinations: ", labelX + wWidth, labelY);
+
+        // Calculate the center position for the combined cost text
+        String costText = "Spin cost: ";
+        String looseText = String.valueOf(loose);
+        int combinedTextWidth = g.getFontMetrics().stringWidth(costText + looseText);
+        int combinedTextX = (wWidth - combinedTextWidth) / 2;
+        int costTextY = buttonY + buttonHeight + fm.getHeight();
+
+        // Draw the cost text in black
+        g.setColor(Color.BLACK);
+        g.drawString(costText, combinedTextX, costTextY);
+
+        // Calculate the position and size for the loose text
+        int looseTextX = combinedTextX + g.getFontMetrics().stringWidth(costText);
+        int looseTextY = costTextY;
+
+        // Draw the gray background and thicker border around the loose text
+        int padding = 1;
+        int borderThickness = 2; // Adjust this value to make the border thicker
+        int rectX = looseTextX - padding;
+        int rectY = looseTextY - fm.getAscent() - padding;
+        int rectWidth = g.getFontMetrics().stringWidth(looseText) + 2 * padding;
+        int rectHeight = fm.getHeight() + 2 * padding;
+
+        // Draw the gray background and thicker border around the loose text
+        g.setColor(Color.GRAY);
+        g.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+        // Draw the border around the loose text
+        g.setColor(Color.BLACK);
+        for (int i = 0; i < borderThickness; i++) {
+            g.drawRect(rectX - i, rectY - i, rectWidth + 2 * i, rectHeight + 2 * i);
+        }
+
+        // Draw the loose text
+        g.setColor(Color.WHITE);
+        g.drawString(looseText, looseTextX, looseTextY);
+
+        // Draw the numbers
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         fm = g.getFontMetrics();

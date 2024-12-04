@@ -64,6 +64,13 @@ public class GamePanel extends Variables implements ActionListener {
     public static GamePanel getInstance() {
         return instance;
     }
+    private String resultMessage = "";
+    private long messageEndTime = 0;
+
+    private String paidMessage = "";
+    private long paidMessageEndTime = 0;
+
+    // Update the paintComponent method in the GamePanel class
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -79,10 +86,40 @@ public class GamePanel extends Variables implements ActionListener {
         int textWidth = g.getFontMetrics().stringWidth(moneyText);
         g.drawString(moneyText, getWidth() - textWidth - 10, 30);
 
+        int messageY = 50; // Initial position below the chips text
+
+        // Draw the result message if it is still within the display duration
+        if (System.currentTimeMillis() < messageEndTime) {
+            g.setFont(new Font("Arial", Font.BOLD, 16));
+            int messageWidth = g.getFontMetrics().stringWidth(resultMessage);
+            int messageX = getWidth() - messageWidth - 10;
+            g.setColor(resultMessage.startsWith("-") ? Color.RED : Color.GREEN);
+            g.drawString(resultMessage, messageX, messageY);
+            messageY += 20; // Move the Y position down for the next message
+        }
+
+        // Draw the paid message if it is still within the display duration
+        if (System.currentTimeMillis() < paidMessageEndTime) {
+            g.setFont(new Font("Arial", Font.BOLD, 16));
+            int messageWidth = g.getFontMetrics().stringWidth(paidMessage);
+            int messageX = getWidth() - messageWidth - 10;
+            g.setColor(Color.RED);
+            g.drawString(paidMessage, messageX, messageY);
+        }
+
         camera.update();
         player.paintComponent(g);
     }
-
+    public void setResultMessage(String message, Color color) {
+        this.resultMessage = message;
+        this.messageEndTime = System.currentTimeMillis() + 1000; // Display for 2 seconds
+        repaint();
+    }
+    public void setPaidMessage(String message) {
+        this.paidMessage = message;
+        this.paidMessageEndTime = System.currentTimeMillis() + 1000; // Display for 1 second
+        repaint();
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!isSlotMachineActive) {

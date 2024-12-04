@@ -52,6 +52,13 @@ public class SmallSlotMachine extends SlotMachine implements Money {
         if (win) {
             PlayerMoney.money += 500;
         }
-        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
+        int result = PlayerMoney.money - moneyBefore;
+        if (result > 0) {
+            GamePanel.getInstance().setResultMessage("+" + result, Color.GREEN);
+        } else if (result < 0) {
+            GamePanel.getInstance().setResultMessage(String.valueOf(result), Color.RED);
+        }
+        GamePanel.getInstance().setPaidMessage("-" + amount); // Set the paid message
+        System.out.println("Win: " + result);
     }
 }

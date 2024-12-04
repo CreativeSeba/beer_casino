@@ -32,19 +32,16 @@ public class BigSlotMachine extends SlotMachine implements Money {
         boolean win = true;
         final int moneyBefore = PlayerMoney.money;
         for (Pair<Integer, Integer> pair : combinations) {
-            if(pair.second==numberOfSlots) {
-                if(pair.first==7){
-                    PlayerMoney.money=1000000;
-                }
-                else {
+            if(pair.second == numberOfSlots) {
+                if(pair.first == 7) {
+                    PlayerMoney.money = 1000000;
+                } else {
                     PlayerMoney.money += 100000;
                 }
-            }
-            else if(pair.second==2){
+            } else if(pair.second == 2) {
                 PlayerMoney.money += amount;
-            }
-            else if(pair.second > 2){
-                PlayerMoney.money += pair.second*amount;
+            } else if(pair.second > 2) {
+                PlayerMoney.money += pair.second * amount;
             }
         }
         int first = numbers[0];
@@ -57,6 +54,13 @@ public class BigSlotMachine extends SlotMachine implements Money {
         if (win) {
             PlayerMoney.money += 50000;
         }
-        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
+        int result = PlayerMoney.money - moneyBefore;
+        if (result > 0) {
+            GamePanel.getInstance().setResultMessage("+" + result, Color.GREEN);
+        } else if (result < 0) {
+            GamePanel.getInstance().setResultMessage(String.valueOf(result), Color.RED);
+        }
+        GamePanel.getInstance().setPaidMessage("-" + amount); // Set the paid message
+        System.out.println("Win: " + result);
     }
 }

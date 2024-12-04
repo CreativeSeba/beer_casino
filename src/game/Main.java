@@ -12,7 +12,7 @@ public class Main extends JFrame {
         setIconImage(icon.getImage());
 
         GamePanel gamePanel = new GamePanel(1000, 700, 750, 50, 10000, 100, 400);
-        add(gamePanel);
+        add(gamePanel);  // Here, add() is called on the JFrame (not GamePanel itself)
         pack();
         setLocationRelativeTo(null);
     }
