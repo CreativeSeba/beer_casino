@@ -60,9 +60,15 @@ public abstract class SlotMachine extends Variables{
                 System.out.println("Przegrales");
             }
         });
+        ArrayList<String> c = combinations();
+        for(int i = 0; i < c.size(); i++) {
+            System.out.println(c.get(i));
+        }
         this.add(spinButton);
     }
     protected abstract void placeBets(int amount);
+    protected abstract ArrayList<String> combinations();
+
     public void interact(Player player) {
         if (isSlotMachineActive) {
             GamePanel.getInstance().remove(this);

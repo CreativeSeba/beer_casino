@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class BigSlotMachine extends SlotMachine implements Money {
     private static final int numberOfSlots = 5, loose = 1000;
@@ -24,6 +25,13 @@ public class BigSlotMachine extends SlotMachine implements Money {
     public BigSlotMachine(int x, int y) {
         super(x, y, numberOfSlots, type, loose, bigSlotMachineImage, color, labelText);
         setBackground(color);
+    }
+
+    @Override
+    public ArrayList<String> combinations(){
+        StringBuilder def = new StringBuilder("000");
+        ArrayList<String> combinations = new ArrayList<>();
+        return combinations;
     }
 
     @Override

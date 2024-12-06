@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SmallSlotMachine extends SlotMachine implements Money {
     private static final int numberOfSlots = 3, loose = 100;
@@ -12,6 +13,7 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     private static final Slots type = Slots.SMALL;
     private static final String labelText = "Small Slot Machine";
     private static final BufferedImage smallSlotMachineImage;
+    private static final String comb = "000";
 
     static {
         try {
@@ -24,6 +26,27 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     public SmallSlotMachine(int x, int y) {
         super(x, y, numberOfSlots, type, loose, smallSlotMachineImage, color, labelText);
         setBackground(color);
+    }
+
+    private void setDef(StringBuilder def){
+        def.setLength(0);
+        def.append(comb);
+    }
+    @Override
+    public ArrayList<String> combinations(){
+        StringBuilder def = new StringBuilder(comb);
+        ArrayList<String> combinations = new ArrayList<>();
+        System.out.println(def);
+        def.replace(0, 1, "XX");
+        combinations.add(def.toString());
+        setDef(def);
+        System.out.println(def);
+       /* for(int i = 0; i < numberOfSlots-1; i++){
+            def.replace(i, i+1, "XX");
+            combinations.add(def.toString());
+            def.reverse();
+        }*/
+        return combinations;
     }
 
     @Override
