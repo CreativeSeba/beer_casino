@@ -2,8 +2,6 @@ package game;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +21,9 @@ public abstract class SlotMachine extends Variables{
     protected int loose;
     private final static int width = 200, height = 200;
     private final static int wWidth = 200, wHeight = 200;
-    private JButton spinButton;
+    private final JButton spinButton;
+    private ArrayList<String> combs;
+    protected int activeBet;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
         this.numberOfSlots = numberOfSlots;
@@ -34,6 +34,9 @@ public abstract class SlotMachine extends Variables{
         this.labelText = labelText;
         this.x = spawnX + x - width/2;
         this.y = spawnY - y - height/2;
+
+        activeBet = numberOfSlots+1;
+        combs = combinations();
 
         slotMachines.add(this);
         slotMachineAreas.add(new Rectangle(this.x, this.y, width, height));
@@ -60,10 +63,6 @@ public abstract class SlotMachine extends Variables{
                 System.out.println("Przegrales");
             }
         });
-        ArrayList<String> c = combinations();
-        for(int i = 0; i < c.size(); i++) {
-            System.out.println(c.get(i));
-        }
         this.add(spinButton);
     }
     protected abstract void placeBets(int amount);
@@ -162,8 +161,20 @@ public abstract class SlotMachine extends Variables{
         int labelY = fm.getHeight();
         g.drawString(labelText, labelX, labelY);
 
+
         // Draw the combinations label
-        g.drawString("Combinations: ", labelX + wWidth, labelY);
+        int combinationsX = (wWidth - fm.stringWidth("Combinations: ")) / 2;
+        g.drawString("Combinations: ", combinationsX + wWidth, labelY);
+        int plusY = labelY;
+        for(int i = 0; i<combs.size(); i++){
+            int combX = (wWidth - fm.stringWidth(combs.get(i))) / 2;
+            plusY+=labelY;
+            if(i==activeBet){
+                g.setColor(Color.WHITE);
+            }
+            g.drawString(combs.get(i), combX + wWidth, plusY);
+            g.setColor(Color.BLACK);
+        }
 
         // Calculate the center position for the combined cost text
         String costText = "Spin cost: ";
@@ -178,13 +189,12 @@ public abstract class SlotMachine extends Variables{
 
         // Calculate the position and size for the loose text
         int looseTextX = combinedTextX + g.getFontMetrics().stringWidth(costText);
-        int looseTextY = costTextY;
 
         // Draw the gray background and thicker border around the loose text
         int padding = 1;
         int borderThickness = 2; // Adjust this value to make the border thicker
         int rectX = looseTextX - padding;
-        int rectY = looseTextY - fm.getAscent() - padding;
+        int rectY = costTextY - fm.getAscent() - padding;
         int rectWidth = g.getFontMetrics().stringWidth(looseText) + 2 * padding;
         int rectHeight = fm.getHeight() + 2 * padding;
 
@@ -200,7 +210,7 @@ public abstract class SlotMachine extends Variables{
 
         // Draw the loose text
         g.setColor(Color.WHITE);
-        g.drawString(looseText, looseTextX, looseTextY);
+        g.drawString(looseText, looseTextX, costTextY);
 
         // Draw the numbers
         g.setColor(Color.WHITE);

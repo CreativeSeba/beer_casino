@@ -13,7 +13,6 @@ public class BigSlotMachine extends SlotMachine implements Money {
     private static final Slots type = Slots.BIG;
     private static final String labelText = "Big Slot Machine";
     private static final BufferedImage bigSlotMachineImage;
-    private static final String comb = "00000";
 
     static {
         try {
@@ -30,20 +29,10 @@ public class BigSlotMachine extends SlotMachine implements Money {
 
     @Override
     public ArrayList<String> combinations(){
-        StringBuilder def = new StringBuilder(comb);
         ArrayList<String> combinations = new ArrayList<>();
-        for(int i = 0; i < numberOfSlots-1; i++){
-            def.replace(i, i+2, "XX");
-            combinations.add(def.toString());
-            def.setLength(0);
-            def.append(comb);
-        }
-        for(int i = 0; i < numberOfSlots-2; i++){
-            def.replace(i, i+3, "XXX");
-            combinations.add(def.toString());
-            def.setLength(0);
-            def.append(comb);
-        };
+        combinations.add("XX000");
+        combinations.add("XXX00");
+        combinations.add("XXXX0");
         combinations.add("XXXXX");
         combinations.add("X0X0X");
         combinations.add("77777");

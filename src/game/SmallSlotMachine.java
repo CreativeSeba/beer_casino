@@ -13,7 +13,6 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     private static final Slots type = Slots.SMALL;
     private static final String labelText = "Small Slot Machine";
     private static final BufferedImage smallSlotMachineImage;
-    private static final String comb = "000";
 
     static {
         try {
@@ -29,15 +28,9 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     }
 
     @Override
-    public ArrayList<String> combinations(){
-        StringBuilder def = new StringBuilder(comb);
+    public ArrayList<String> combinations() {
         ArrayList<String> combinations = new ArrayList<>();
-        for(int i = 0; i < numberOfSlots-1; i++){
-            def.replace(i, i+2, "XX");
-            combinations.add(def.toString());
-            def.setLength(0);
-            def.append(comb);
-        }
+        combinations.add("XX0");
         combinations.add("XXX");
         combinations.add("X0X");
         combinations.add("777");
@@ -57,10 +50,12 @@ public class SmallSlotMachine extends SlotMachine implements Money {
             if (pair.second == numberOfSlots) {
                 if (pair.first == 7) {
                     PlayerMoney.money = 50000;
+                    activeBet=3;
                 } else {
                     PlayerMoney.money += 5000;
                 }
             } else if (pair.second > 1) {
+                activeBet=0;
                 PlayerMoney.money += pair.second * amount / 2;
             }
         }
