@@ -28,24 +28,19 @@ public class SmallSlotMachine extends SlotMachine implements Money {
         setBackground(color);
     }
 
-    private void setDef(StringBuilder def){
-        def.setLength(0);
-        def.append(comb);
-    }
     @Override
     public ArrayList<String> combinations(){
         StringBuilder def = new StringBuilder(comb);
         ArrayList<String> combinations = new ArrayList<>();
-        System.out.println(def);
-        def.replace(0, 1, "XX");
-        combinations.add(def.toString());
-        setDef(def);
-        System.out.println(def);
-       /* for(int i = 0; i < numberOfSlots-1; i++){
-            def.replace(i, i+1, "XX");
+        for(int i = 0; i < numberOfSlots-1; i++){
+            def.replace(i, i+2, "XX");
             combinations.add(def.toString());
-            def.reverse();
-        }*/
+            def.setLength(0);
+            def.append(comb);
+        }
+        combinations.add("XXX");
+        combinations.add("X0X");
+        combinations.add("777");
         return combinations;
     }
 
