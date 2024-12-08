@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SmallSlotMachine extends SlotMachine implements Money {
+public class SmallSlotMachine extends SlotMachine {
     private static final int numberOfSlots = 3, loose = 100;
     private static final Color color = Color.GREEN;
     private static final Slots type = Slots.SMALL;
@@ -28,54 +28,49 @@ public class SmallSlotMachine extends SlotMachine implements Money {
     }
 
     @Override
-    public ArrayList<String> combinations() {
-        ArrayList<String> combinations = new ArrayList<>();
-        combinations.add("XX0");
-        combinations.add("XXX");
-        combinations.add("X0X");
-        combinations.add("777");
+    public ArrayList<Pair<String, Integer>> combinations() {
+        ArrayList<Pair<String, Integer>>  combinations = new ArrayList<>();
+        combinations.add(new Pair<>("XX0", loose/2));
+        combinations.add(new Pair<>("X0X", loose*5));
+        combinations.add(new Pair<>("XXX", loose*50));
+        combinations.add(new Pair<>("777", loose*500));
         return combinations;
     }
 
     @Override
-    public void placeBets(int amount) {
-        if (PlayerMoney.money < amount) {
-            GamePanel.getInstance().setResultMessage("Not enough money", Color.RED);
-            return;
-        }
-        Money.super.placeBets(amount);
+    public void bet() {
+        super.placeBets(loose);
+        activeBet = -1;
         boolean win = true;
         final int moneyBefore = PlayerMoney.money;
-        for (Pair<Integer, Integer> pair : combinations) {
+        int first = numbers[0];
+        if(vCombs.get(0).second != numberOfSlots) {
+            for (int i = 1; i <= numberOfSlots; i++) {
+                if (i % 2 == 0 && numbers[i] != first) {
+                    win = false;
+                    break;
+                }
+            }
+            if (win) {
+                activeBet = 1;
+                PlayerMoney.money += vCombs.get(activeBet).second;
+            }
+        }
+        for (Pair<Integer, Integer> pair : cCombs) {
             if (pair.second == numberOfSlots) {
                 if (pair.first == 7) {
-                    PlayerMoney.money = 50000;
                     activeBet=3;
+                    PlayerMoney.money += vCombs.get(activeBet).second;
                 } else {
-                    PlayerMoney.money += 5000;
+                    activeBet=2;
+                    PlayerMoney.money += vCombs.get(activeBet).second;
                 }
-            } else if (pair.second > 1) {
+            } else if (pair.second == 2) {
                 activeBet=0;
-                PlayerMoney.money += pair.second * amount / 2;
+                PlayerMoney.money += vCombs.get(activeBet).second;
             }
         }
-        int first = numbers[0];
-        for (int i = 1; i <= numberOfSlots; i++) {
-            if (i % 2 == 0 && numbers[i] != first) {
-                win = false;
-                break;
-            }
-        }
-        if (win) {
-            PlayerMoney.money += 500;
-        }
-        int result = PlayerMoney.money - moneyBefore;
-        if (result > 0) {
-            GamePanel.getInstance().setResultMessage("+" + result, Color.GREEN);
-        } else if (result < 0) {
-            GamePanel.getInstance().setResultMessage(String.valueOf(result), Color.RED);
-        }
-        GamePanel.getInstance().setPaidMessage("-" + amount); // Set the paid message
-        System.out.println("Win: " + result);
+        updateGamePanelMessages(moneyBefore, loose);
+        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
 }

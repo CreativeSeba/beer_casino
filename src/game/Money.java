@@ -4,13 +4,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public interface Money {
-    default void placeBets (int amount){
-        if(PlayerMoney.money >= amount){
-            PlayerMoney.money -= amount;
+    void placeBets(int amount);
+    default void updateGamePanelMessages(int moneyBefore, int amount) {
+        int result = PlayerMoney.money - moneyBefore;
+        if (result > 0) {
+            GamePanel.getInstance().setResultMessage("+" + result, Color.GREEN);
+        } else if (result < 0) {
+            GamePanel.getInstance().setResultMessage(String.valueOf(result), Color.RED);
         }
-        if(PlayerMoney.money < 0){
-            PlayerMoney.money = 0;
-        }
+        GamePanel.getInstance().setPaidMessage("-" + amount); // Set the paid message
     }
-    //void interaction(KeyEvent key);
+    void interaction(Player player);
 }

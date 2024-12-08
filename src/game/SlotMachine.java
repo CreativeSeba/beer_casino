@@ -8,10 +8,11 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 
-public abstract class SlotMachine extends Variables{
+public abstract class SlotMachine extends Variables implements Money {
     protected int[] numbers;
     protected int x, y;
-    protected static List<Pair<Integer, Integer>> combinations;
+    protected static List<Pair<Integer, Integer>> cCombs; // check combinations
+    protected final ArrayList<Pair<String, Integer>> vCombs; // view combinations
     private final Random random = new Random();
     protected Slots type;
     protected String labelText;
@@ -22,7 +23,6 @@ public abstract class SlotMachine extends Variables{
     private final static int width = 200, height = 200;
     private final static int wWidth = 200, wHeight = 200;
     private final JButton spinButton;
-    private ArrayList<String> combs;
     protected int activeBet;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
@@ -35,28 +35,28 @@ public abstract class SlotMachine extends Variables{
         this.x = spawnX + x - width/2;
         this.y = spawnY - y - height/2;
 
-        activeBet = numberOfSlots+1;
-        combs = combinations();
+        vCombs = combinations();
+        activeBet = -1;
 
         slotMachines.add(this);
         slotMachineAreas.add(new Rectangle(this.x, this.y, width, height));
 
         numbers = new int[numberOfSlots];
-        combinations = new ArrayList<>();
+        cCombs = new ArrayList<>();
 
         spinButton = new JButton("Spin");
         spinButton.setFocusable(false);
 
         spinButton.addActionListener(e -> {
             if(PlayerMoney.money < loose) {
-                placeBets(loose);
+                GamePanel.getInstance().setResultMessage("Not enough money", Color.RED);
             }
             else if (PlayerMoney.money > 0) {
                 spin();
-                for (Pair<Integer, Integer> pair : combinations) {
+                for (Pair<Integer, Integer> pair : cCombs) {
                     System.out.println(pair.first + " " + pair.second);
                 }
-                placeBets(loose);
+                bet();
                 System.out.println("\n");
                 repaint();
             } else {
@@ -65,10 +65,15 @@ public abstract class SlotMachine extends Variables{
         });
         this.add(spinButton);
     }
-    protected abstract void placeBets(int amount);
-    protected abstract ArrayList<String> combinations();
+    @Override
+    public void placeBets(int amount) {
+        PlayerMoney.money -= amount;
+    }
+    protected abstract void bet();
+    protected abstract ArrayList<Pair<String, Integer>> combinations();
 
-    public void interact(Player player) {
+    @Override
+    public void interaction(Player player) {
         if (isSlotMachineActive) {
             GamePanel.getInstance().remove(this);
             resetNumbers();
@@ -87,7 +92,7 @@ public abstract class SlotMachine extends Variables{
         GamePanel.getInstance().repaint();
     }
     private void spin() {
-        combinations.clear();
+        cCombs.clear();
         Pair<Integer, Integer> numCount = new Pair<>(0, 0);
         for (int i = 0; i < numberOfSlots; i++) {
             numbers[i] = 0;
@@ -103,18 +108,19 @@ public abstract class SlotMachine extends Variables{
                 if (curr == prev) {
                     numCount.second++;
                 } else {
-                    combinations.add(new Pair<>(numCount.first, numCount.second));
+                    cCombs.add(new Pair<>(numCount.first, numCount.second));
                     numCount.first = curr;
                     numCount.second = 1;
                 }
             }
         }
-        combinations.add(new Pair<>(numCount.first, numCount.second));
+        cCombs.add(new Pair<>(numCount.first, numCount.second));
         repaint();
     }
 
     protected void resetNumbers() {
         Arrays.fill(numbers, 0);
+        activeBet = -1;
         repaint();
     }
     protected void draw(Graphics g) {
@@ -166,15 +172,18 @@ public abstract class SlotMachine extends Variables{
         int combinationsX = (wWidth - fm.stringWidth("Combinations: ")) / 2;
         g.drawString("Combinations: ", combinationsX + wWidth, labelY);
         int plusY = labelY;
-        for(int i = 0; i<combs.size(); i++){
-            int combX = (wWidth - fm.stringWidth(combs.get(i))) / 2;
+        int won = 0;
+        for(int i = 0; i< vCombs.size(); i++){
+            int combX = (wWidth - fm.stringWidth(vCombs.get(i).first)) / 2;
             plusY+=labelY;
             if(i==activeBet){
                 g.setColor(Color.WHITE);
+                won += vCombs.get(i).second;
             }
-            g.drawString(combs.get(i), combX + wWidth, plusY);
+            g.drawString(vCombs.get(i).first, combX + wWidth, plusY);
             g.setColor(Color.BLACK);
         }
+        g.drawString("You won: "+ won, combinationsX + wWidth, plusY+labelY*2);
 
         // Calculate the center position for the combined cost text
         String costText = "Spin cost: ";

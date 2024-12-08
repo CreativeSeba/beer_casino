@@ -8,6 +8,12 @@ import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
     private static GamePanel instance;
+    private String resultMessage;
+    private long messageEndTime;
+    private Color messageColor;
+    private String paidMessage;
+    private long paidMessageEndTime;
+
     public GamePanel(int sWidth, int sHeight, int wallRadius, int wallThickness, int money, int playerSize, int playerSpeed) {
         instance = this;
         Variables.sWidth = sWidth;
@@ -45,7 +51,7 @@ public class GamePanel extends Variables implements ActionListener {
                         if (slotMachineArea.contains(player.getX(), player.getY())) {
                             SlotMachine slotMachine = slotMachines.get(i);
                             if (slotMachine != null) {
-                                slotMachine.interact(player);
+                                slotMachine.interaction(player);
                                 break;
                             }
                         }
@@ -64,12 +70,6 @@ public class GamePanel extends Variables implements ActionListener {
     public static GamePanel getInstance() {
         return instance;
     }
-    private String resultMessage;
-    private long messageEndTime;
-    private Color messageColor;
-
-    private String paidMessage;
-    private long paidMessageEndTime;
 
     // Update the paintComponent method in the GamePanel class
     @Override
