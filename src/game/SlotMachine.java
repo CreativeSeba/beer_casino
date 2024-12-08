@@ -24,6 +24,7 @@ public abstract class SlotMachine extends Variables implements Money {
     private final static int wWidth = 200, wHeight = 200;
     private final JButton spinButton;
     protected int activeBet;
+    protected int moneyBefore;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
         this.numberOfSlots = numberOfSlots;
@@ -50,24 +51,28 @@ public abstract class SlotMachine extends Variables implements Money {
         spinButton.addActionListener(e -> {
             if(PlayerMoney.money < loose) {
                 GamePanel.getInstance().setResultMessage("Not enough money", Color.RED);
+                System.out.println("Przegrales");
             }
             else if (PlayerMoney.money > 0) {
                 spin();
                 for (Pair<Integer, Integer> pair : cCombs) {
                     System.out.println(pair.first + " " + pair.second);
                 }
-                bet();
+                placeBets(loose);
                 System.out.println("\n");
                 repaint();
-            } else {
-                System.out.println("Przegrales");
             }
         });
         this.add(spinButton);
     }
     @Override
     public void placeBets(int amount) {
+        activeBet = -1;
         PlayerMoney.money -= amount;
+        moneyBefore = PlayerMoney.money;
+        bet();
+        updateGamePanelMessages(moneyBefore, loose);
+        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
     protected abstract void bet();
     protected abstract ArrayList<Pair<String, Integer>> combinations();

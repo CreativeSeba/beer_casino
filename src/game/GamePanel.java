@@ -113,13 +113,13 @@ public class GamePanel extends Variables implements ActionListener {
     }
     public void setResultMessage(String message, Color color) {
         this.resultMessage = message;
-        this.messageEndTime = System.currentTimeMillis() + 1000; // Display for 2 seconds
+        this.messageEndTime = System.currentTimeMillis() + 1000;
         this.messageColor = color;
         repaint();
     }
     public void setPaidMessage(String message) {
         this.paidMessage = message;
-        this.paidMessageEndTime = System.currentTimeMillis() + 1000; // Display for 1 second
+        this.paidMessageEndTime = System.currentTimeMillis() + 1000;
         repaint();
     }
     @Override

@@ -39,12 +39,9 @@ public class SmallSlotMachine extends SlotMachine {
 
     @Override
     public void bet() {
-        super.placeBets(loose);
-        activeBet = -1;
         boolean win = true;
-        final int moneyBefore = PlayerMoney.money;
         int first = numbers[0];
-        if(vCombs.get(0).second != numberOfSlots) {
+        if(cCombs.get(0).second != numberOfSlots) {
             for (int i = 1; i <= numberOfSlots; i++) {
                 if (i % 2 == 0 && numbers[i] != first) {
                     win = false;
@@ -60,17 +57,14 @@ public class SmallSlotMachine extends SlotMachine {
             if (pair.second == numberOfSlots) {
                 if (pair.first == 7) {
                     activeBet=3;
-                    PlayerMoney.money += vCombs.get(activeBet).second;
                 } else {
                     activeBet=2;
-                    PlayerMoney.money += vCombs.get(activeBet).second;
                 }
+                PlayerMoney.money += vCombs.get(activeBet).second;
             } else if (pair.second == 2) {
                 activeBet=0;
                 PlayerMoney.money += vCombs.get(activeBet).second;
             }
         }
-        updateGamePanelMessages(moneyBefore, loose);
-        System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
 }
