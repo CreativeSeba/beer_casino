@@ -24,7 +24,6 @@ public class SmallSlotMachine extends SlotMachine {
 
     public SmallSlotMachine(int x, int y) {
         super(x, y, numberOfSlots, type, loose, smallSlotMachineImage, color, labelText);
-        setBackground(color);
     }
 
     @Override

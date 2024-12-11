@@ -8,6 +8,8 @@ import java.util.HashSet;
 
 public class GamePanel extends Variables implements ActionListener {
     private static GamePanel instance;
+    private static Wall wall;
+    private static Floor floor;
     private String resultMessage;
     private long messageEndTime;
     private Color messageColor;
@@ -28,15 +30,16 @@ public class GamePanel extends Variables implements ActionListener {
         player = new Player(spawnX, spawnY, playerSize, playerSpeed);
         floor = new Floor();
         wall = new Wall();
-        bar = new Bar();
-        slotMachines = new ArrayList<>();
+        entities = new ArrayList<>();
         entityAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
         PlayerMoney.money = money;
+        //BAR
+        new Bar();
         //SMALL
-        new SmallSlotMachine(-200, 0);
+        new SmallSlotMachine(-300, 0);
         //BIG
-        new BigSlotMachine(200, 0);
+        new BigSlotMachine(300, 0);
 
         setPreferredSize(new Dimension(sWidth, sHeight));
         setFocusable(true);
@@ -47,16 +50,15 @@ public class GamePanel extends Variables implements ActionListener {
                 pressedKeys.add(key.getKeyCode());
                 if (key.getKeyCode() == KeyEvent.VK_E) {
                     for (int i = 0; i < entityAreas.size(); i++) {
-                        Rectangle slotMachineArea = entityAreas.get(i);
-                        if (slotMachineArea.contains(player.getX(), player.getY())) {
-                            SlotMachine slotMachine = slotMachines.get(i);
-                            if (slotMachine != null) {
-                                slotMachine.interaction(player);
+                        Rectangle entityArea = entityAreas.get(i);
+                        if (entityArea.contains(player.getX(), player.getY())) {
+                            Entity entity = entities.get(i);
+                            if (entity != null) {
+                                entity.interaction(player);
                                 break;
                             }
                         }
                     }
-
                 }
             }
 
@@ -65,7 +67,7 @@ public class GamePanel extends Variables implements ActionListener {
                 pressedKeys.remove(key.getKeyCode());
             }
         });
-        timer = new Timer(16, this);
+        Timer timer = new Timer(16, this);
         timer.start();
     }
     public static GamePanel getInstance() {
@@ -78,9 +80,8 @@ public class GamePanel extends Variables implements ActionListener {
         super.paintComponent(g);
         floor.paintComponent(g);
         wall.paintComponent(g);
-        bar.paintComponent(g);
-        for (SlotMachine slotMachine : slotMachines) {
-            slotMachine.draw(g);
+        for (Entity entity : entities) {
+            entity.draw(g);
         }
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 20));
@@ -112,6 +113,7 @@ public class GamePanel extends Variables implements ActionListener {
         camera.update();
         player.paintComponent(g);
     }
+
     public void setResultMessage(String message, Color color) {
         this.resultMessage = message;
         this.messageEndTime = System.currentTimeMillis() + 1000;

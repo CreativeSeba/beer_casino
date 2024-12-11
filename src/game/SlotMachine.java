@@ -8,39 +8,26 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 
-public abstract class SlotMachine extends Variables implements Money {
+public abstract class SlotMachine extends Entity{
     protected int[] numbers;
-    protected int x, y;
     protected static List<Pair<Integer, Integer>> cCombs; // check combinations
     protected final ArrayList<Pair<String, Integer>> vCombs; // view combinations
     private final Random random = new Random();
     protected Slots type;
-    protected String labelText;
     private final int numberOfSlots;
-    protected BufferedImage image;
-    protected Color color;
     protected int loose;
-    private final static int width = 200, height = 200;
-    private final static int wWidth = 200, wHeight = 200;
     private final JButton spinButton;
     protected int activeBet;
     protected int moneyBefore;
 
     public SlotMachine(int x, int y, int numberOfSlots, Slots type, int loose, BufferedImage image, Color color, String labelText) {
+        super(spawnX + x - width/2, spawnY - y - height/2, labelText, image, color);
         this.numberOfSlots = numberOfSlots;
         this.type = type;
-        this.image = image;
-        this.color = color;
         this.loose = loose;
-        this.labelText = labelText;
-        this.x = spawnX + x - width/2;
-        this.y = spawnY - y - height/2;
 
         vCombs = combinations();
         activeBet = -1;
-
-        slotMachines.add(this);
-        entityAreas.add(new Rectangle(this.x, this.y, width, height));
 
         numbers = new int[numberOfSlots];
         cCombs = new ArrayList<>();
@@ -126,29 +113,7 @@ public abstract class SlotMachine extends Variables implements Money {
         activeBet = -1;
         repaint();
     }
-    protected void draw(Graphics g) {
-        if (image != null) {
-            g.drawImage(image, x - camera.getX(), y - camera.getY(), width, height, null);
-        } else {
-            g.setColor(color);
-            g.fillRect(x - camera.getX(), y - camera.getY(), width, height);
-        }
-        boolean isPlayerInArea = player.getX() >= x && player.getX() <= x + width && player.getY() >= y && player.getY() <= y + height;
-        if (!isActiveEntity && isPlayerInArea) {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Press E to play";
-            int textWidth = g.getFontMetrics().stringWidth(message);
-            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + wHeight - height - camera.getY());
-        }
-        else if(isActiveEntity && isPlayerInArea){
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Press E to leave";
-            int textWidth = g.getFontMetrics().stringWidth(message);
-            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + wHeight - height - camera.getY());
-        }
-    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -166,10 +131,7 @@ public abstract class SlotMachine extends Variables implements Money {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 16));
         FontMetrics fm = g.getFontMetrics();
-        int labelX = (wWidth - fm.stringWidth(labelText)) / 2;
         int labelY = fm.getHeight();
-        g.drawString(labelText, labelX, labelY);
-
 
         // Draw the combinations label
         int combinationsX = (wWidth - fm.stringWidth("Combinations: ")) / 2;

@@ -5,7 +5,6 @@ import java.awt.event.KeyEvent;
 
 public interface Money {
     void placeBets(int amount);
-    void interaction(Player player);
     default void updateGamePanelMessages(int moneyBefore, int amount) {
         int result = PlayerMoney.money - moneyBefore;
         if (result > 0) {

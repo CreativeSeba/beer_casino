@@ -1,15 +1,16 @@
 package game;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Bar extends Variables implements Money{
+public class Bar extends Entity{
     private static final BufferedImage barImage;
-    private static final int width = 200, height = 200;
-    private static final int x = spawnX-width/2, y = spawnY-sHeight-height/2+wallThickness;
+    private static final Color color = Color.YELLOW;
+    private static final String labelText = "Bar";
 
     static {
         try {
@@ -18,7 +19,10 @@ public class Bar extends Variables implements Money{
             throw new RuntimeException(e);
         }
     }
+
     public Bar() {
+        super(spawnX - width /2, spawnY - height /2, labelText, barImage, color);
+
     }
 
     @Override
@@ -35,8 +39,8 @@ public class Bar extends Variables implements Money{
             setBounds(new Rectangle(x, y, width, height));
             GamePanel.getInstance().add(this);
             isActiveEntity = true;
-            player.setX(x);
-            player.setY(y + player.getHeight() / 4);
+            player.setX(x + width / 2);
+            player.setY(y + player.getHeight() / 4 + height / 2);
         }
         GamePanel.getInstance().revalidate();
         GamePanel.getInstance().repaint();
@@ -45,23 +49,7 @@ public class Bar extends Variables implements Money{
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        int drawX = x - camera.getX();
-        int drawY = y - camera.getY();
-        g.drawImage(barImage, drawX, drawY, width, height, null);
-        boolean isPlayerInArea = player.getX() >= x && player.getX() <= x + width && player.getY() >= y && player.getY() <= y + height;
-        if (!isActiveEntity && isPlayerInArea) {
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Press E to enter";
-            int textWidth = g.getFontMetrics().stringWidth(message);
-            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + height - height - camera.getY());
-        }
-        else if(isActiveEntity && isPlayerInArea){
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Arial", Font.BOLD, 20));
-            String message = "Press E to leave";
-            int textWidth = g.getFontMetrics().stringWidth(message);
-            g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + width - height - camera.getY());
-        }
+        setSize(wWidth, wHeight);
+        setLocation( spawnX - wWidth / 2, 0);
     }
 }

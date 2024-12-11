@@ -105,7 +105,6 @@ public class Player extends Variables {
         }
 
         player.move(dx, dy);
-
      /*   double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
         System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }

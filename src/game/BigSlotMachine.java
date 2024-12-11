@@ -24,7 +24,6 @@ public class BigSlotMachine extends SlotMachine {
 
     public BigSlotMachine(int x, int y) {
         super(x, y, numberOfSlots, type, loose, bigSlotMachineImage, color, labelText);
-        setBackground(color);
     }
 
     @Override
