@@ -11,18 +11,20 @@ public class Player extends Variables {
     private int y;
     private final int size;
     private final int speed;
-    private static Image playerImage;
+    private static final Image playerImage;
+    static{
+        try {
+            playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Player(int x, int y, int size, int speed) {
         this.x = x;
         this.y = y;
         this.size = size;
         this.speed = speed;
-        try {
-            playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public int getWidth() {

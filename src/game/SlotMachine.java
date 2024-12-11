@@ -40,7 +40,7 @@ public abstract class SlotMachine extends Variables implements Money {
         activeBet = -1;
 
         slotMachines.add(this);
-        slotMachineAreas.add(new Rectangle(this.x, this.y, width, height));
+        entityAreas.add(new Rectangle(this.x, this.y, width, height));
 
         numbers = new int[numberOfSlots];
         cCombs = new ArrayList<>();
@@ -75,21 +75,19 @@ public abstract class SlotMachine extends Variables implements Money {
         System.out.println("Win: " + (PlayerMoney.money - moneyBefore));
     }
     protected abstract void bet();
+
     protected abstract ArrayList<Pair<String, Integer>> combinations();
 
     @Override
     public void interaction(Player player) {
-        if (isSlotMachineActive) {
+        if (isActiveEntity) {
             GamePanel.getInstance().remove(this);
             resetNumbers();
-            isSlotMachineActive = false;
-            activeSlotMachine = null;
+            isActiveEntity = false;
         } else {
             setBounds(new Rectangle(x, y, width, height));
             GamePanel.getInstance().add(this);
-            isSlotMachineActive = true;
-            activeSlotMachine = this;
-
+            isActiveEntity = true;
             player.setX(x + width / 2);
             player.setY(y + height / 2 + player.getHeight() / 4);
         }
@@ -136,14 +134,14 @@ public abstract class SlotMachine extends Variables implements Money {
             g.fillRect(x - camera.getX(), y - camera.getY(), width, height);
         }
         boolean isPlayerInArea = player.getX() >= x && player.getX() <= x + width && player.getY() >= y && player.getY() <= y + height;
-        if (!isSlotMachineActive && isPlayerInArea) {
+        if (!isActiveEntity && isPlayerInArea) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             String message = "Press E to play";
             int textWidth = g.getFontMetrics().stringWidth(message);
             g.drawString(message, x + width / 2 - textWidth / 2 - camera.getX(), y + wHeight - height - camera.getY());
         }
-        else if(isSlotMachineActive && isPlayerInArea){
+        else if(isActiveEntity && isPlayerInArea){
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 20));
             String message = "Press E to leave";

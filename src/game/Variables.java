@@ -15,7 +15,6 @@ public abstract class Variables extends JPanel {
     protected static Floor floor;
     protected static Bar bar;
     protected static List<SlotMachine> slotMachines;
-    protected static List<Rectangle> slotMachineAreas;
-    protected static boolean isSlotMachineActive = false;
-    protected static SlotMachine activeSlotMachine;
+    protected static List<Rectangle> entityAreas;
+    protected static boolean isActiveEntity = false;
 }

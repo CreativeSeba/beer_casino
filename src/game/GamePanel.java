@@ -30,7 +30,7 @@ public class GamePanel extends Variables implements ActionListener {
         wall = new Wall();
         bar = new Bar();
         slotMachines = new ArrayList<>();
-        slotMachineAreas = new ArrayList<>();
+        entityAreas = new ArrayList<>();
         pressedKeys = new HashSet<>();
         PlayerMoney.money = money;
         //SMALL
@@ -46,8 +46,8 @@ public class GamePanel extends Variables implements ActionListener {
             public void keyPressed(KeyEvent key) {
                 pressedKeys.add(key.getKeyCode());
                 if (key.getKeyCode() == KeyEvent.VK_E) {
-                    for (int i = 0; i < slotMachineAreas.size(); i++) {
-                        Rectangle slotMachineArea = slotMachineAreas.get(i);
+                    for (int i = 0; i < entityAreas.size(); i++) {
+                        Rectangle slotMachineArea = entityAreas.get(i);
                         if (slotMachineArea.contains(player.getX(), player.getY())) {
                             SlotMachine slotMachine = slotMachines.get(i);
                             if (slotMachine != null) {
@@ -56,6 +56,7 @@ public class GamePanel extends Variables implements ActionListener {
                             }
                         }
                     }
+
                 }
             }
 
@@ -124,7 +125,7 @@ public class GamePanel extends Variables implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (!isSlotMachineActive) {
+        if (!isActiveEntity) {
             player.updatePlayerPosition();
         }
         repaint();
