@@ -35,6 +35,7 @@ public class Bar extends Entity{
         if (isActiveEntity) {
             GamePanel.getInstance().remove(this);
             isActiveEntity = false;
+            pressedKeys.clear();
         } else {
             setBounds(new Rectangle(x, y, width, height));
             GamePanel.getInstance().add(this);

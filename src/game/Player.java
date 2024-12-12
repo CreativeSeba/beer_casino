@@ -12,6 +12,8 @@ public class Player extends Variables {
     private final int size;
     private final int speed;
     private static final Image playerImage;
+    private long lastUpdateTime;
+
     static{
         try {
             playerImage = ImageIO.read(new File("src/game/graphics/player.png"));
@@ -80,8 +82,16 @@ public class Player extends Variables {
         }
     }
     protected void updatePlayerPosition() {
-        double deltaTime = 0.016;
+        // Last update time is used to calculate the time elapsed since the last update, to make the movement speed independent of the frame rate
+        // Get the current time in nanoseconds
+        long currentTime = System.nanoTime();
+        // Calculate the time elapsed since the last update and convert it to seconds
+        double deltaTime = (currentTime - lastUpdateTime) / 1_000_000_000.0;
+        // Update the last update time to the current time
+        lastUpdateTime = currentTime;
+
         double speed = player.getSpeed();
+
         double dx = 0;
         double dy = 0;
 
@@ -98,16 +108,19 @@ public class Player extends Variables {
             dx += 1;
         }
 
+        // Calculate the length of the direction vector
         double length = Math.sqrt(dx * dx + dy * dy);
         if (length != 0) {
+            // Normalize the direction vector and scale it by speed and deltaTime
             dx = (dx / length) * speed * deltaTime;
             dy = (dy / length) * speed * deltaTime;
         }
 
         player.move(dx, dy);
-     /*   double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
+        /*double currentSpeed = Math.sqrt(dx * dx + dy * dy) / deltaTime;
         System.out.println("Player speed: " + currentSpeed + " pixels per second");*/
     }
+
     @Override
     protected void paintComponent(Graphics g) {
         int drawX = x - camera.getX() - size / 2;

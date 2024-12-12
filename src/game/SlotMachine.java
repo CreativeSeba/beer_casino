@@ -71,6 +71,7 @@ public abstract class SlotMachine extends Entity{
             GamePanel.getInstance().remove(this);
             resetNumbers();
             isActiveEntity = false;
+            pressedKeys.clear();
         } else {
             setBounds(new Rectangle(x, y, width, height));
             GamePanel.getInstance().add(this);
